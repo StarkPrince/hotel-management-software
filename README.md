@@ -2,7 +2,7 @@
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
 
-# Hotel Management System 🏨  
+# Hotel and Rstraurent Management System 🏨  
 
 A modern, free, and open-source hotel management software built to streamline operations, enhance guest experience, and simplify daily management tasks. Whether you're managing reservations, tracking staff performance, or analyzing data, our software is designed to empower hotel owners with powerful tools.
 
@@ -46,8 +46,8 @@ A modern, free, and open-source hotel management software built to streamline op
 ### Installation  
 1. Clone the repository:  
    ```bash
-   git clone https://github.com/starkprince/hotel-management-software.git
-   cd hotel-management-software
+   git clone https://github.com/Mithilastack/spirit.git
+   cd spirit
 
 2.  Install dependencies:
     
