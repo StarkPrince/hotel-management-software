@@ -1,51 +1,44 @@
-"use client";
+"use client"
 
-import { Card } from "@/components/ui/card";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { fetchRevenueChart } from "@/lib/api"
+import { useEffect, useState } from "react"
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 
-const data = [
-  { name: "Jan", revenue: 4000 },
-  { name: "Feb", revenue: 3000 },
-  { name: "Mar", revenue: 5000 },
-  { name: "Apr", revenue: 4500 },
-  { name: "May", revenue: 6000 },
-  { name: "Jun", revenue: 7000 },
-];
 
-export function DashboardChart() {
+
+export function DashboardChart()
+{
+  const [data, setData] = useState([])
+
+  useEffect(() =>
+  {
+    const loadChartData = async () =>
+    {
+      const chartData = await fetchRevenueChart()
+      setData(chartData)
+    }
+    loadChartData()
+  }, [])
+
   return (
-    <Card className="p-6">
-      <h3 className="text-lg font-medium mb-4">Revenue Overview</h3>
-      <div className="h-[300px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data}>
+    <Card className="col-span-4">
+      <CardHeader>
+        <CardTitle>Revenue Overview</CardTitle>
+      </CardHeader>
+      <CardContent className="pl-2">
+        <ResponsiveContainer width="100%" height={350}>
+          <BarChart width={730} height={250} data={data}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis 
-              dataKey="name"
-              padding={{ left: 30, right: 30 }}
-            />
-            <YAxis 
-              width={80}
-              tickFormatter={(value) => `$${value}`}
-            />
+            <XAxis dataKey="name" />
+            <YAxis />
             <Tooltip />
-            <Line
-              type="monotone"
-              dataKey="revenue"
-              stroke="#8884d8"
-              strokeWidth={2}
-            />
-          </LineChart>
+            <Legend />
+            <Bar dataKey="value" name="Amount (₹)" fill="#8884d8" />
+          </BarChart>
         </ResponsiveContainer>
-      </div>
+      </CardContent>
     </Card>
-  );
+  )
 }
+

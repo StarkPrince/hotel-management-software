@@ -1,13 +1,18 @@
 import cors from "@fastify/cors";
 import { PrismaClient } from "@prisma/client";
 import Fastify from "fastify";
+import { bookingPlatformIntegration } from "./services/bookingPlatformIntegration";
+import { bookingService } from "./services/bookingService";
+import { dashboardService } from "./services/dashboardService";
+import { maintenanceService } from "./services/maintenanceService";
+import { roomService } from "./services/roomService";
+import { staffService } from "./services/staffService";
+import { taskService } from "./services/taskService";
 
-console.log("Starting server...");
 const fastify = Fastify({
   logger: true,
 });
 
-// allow cross-origin requests
 fastify.register(cors, {
   origin: "*",
 });
@@ -19,65 +24,92 @@ fastify.get("/health", async () => {
   return { status: "ok" };
 });
 
-// Room endpoints
-fastify.get("/api/rooms", async () => {
-  console.log("GET /api/rooms");
-  const rooms = await prisma.room.findMany({
-    include: {
-      bookings: true,
-    },
-  });
-  return rooms;
+// Dashboard endpoints
+fastify.get("/api/dashboard/stats", async () => {
+  return await dashboardService.getStats(prisma);
 });
 
-fastify.post("/api/rooms", async (request, reply) => {
-  const room = request.body as any;
-  const newRoom = await prisma.room.create({
-    data: room,
-  });
-  return reply.code(201).send(newRoom);
+fastify.get("/api/dashboard/revenue-chart", async () => {
+  return await dashboardService.getRevenueChart(prisma);
+});
+
+// Room endpoints
+fastify.get("/api/rooms", async () => {
+  return await roomService.getAllRooms(prisma);
+});
+
+fastify.get("/api/rooms/:id", async (request: any) => {
+  return await roomService.getRoomById(prisma, request.params.id);
+});
+
+fastify.post("/api/rooms", async (request: any, reply: any) => {
+  return await roomService.createRoom(prisma, request.body);
+});
+
+fastify.put("/api/rooms/:id", async (request: any) => {
+  return await roomService.updateRoom(prisma, request.params.id, request.body);
 });
 
 // Booking endpoints
 fastify.get("/api/bookings", async () => {
-  const bookings = await prisma.booking.findMany({
-    include: {
-      room: true,
-    },
-  });
-  return bookings;
+  return await bookingService.getAllBookings(prisma);
 });
 
 fastify.post("/api/bookings", async (request: any, reply: any) => {
-  const booking = request.body as any;
-  const newBooking = await prisma.booking.create({
-    data: booking,
-    include: {
-      room: true,
-    },
-  });
-  return reply.code(201).send(newBooking);
+  return await bookingService.createBooking(prisma, request.body);
 });
 
-// Cleaning schedule endpoints
-fastify.get("/api/cleaning-schedules", async () => {
-  const schedules = await prisma.cleaningSchedule.findMany();
-  return schedules;
+fastify.put("/api/bookings/:id/status", async (request: any) => {
+  return await bookingService.updateBookingStatus(
+    prisma,
+    request.params.id,
+    request.body.status
+  );
 });
 
-fastify.post("/api/cleaning-schedules", async (request: any, reply: any) => {
-  const schedule = request.body as any;
-  const newSchedule = await prisma.cleaningSchedule.create({
-    data: schedule,
-  });
-  return reply.code(201).send(newSchedule);
+// External Platform Integration endpoints
+fastify.get("/api/external-bookings/:platform", async (request: any) => {
+  console.log(request.params.platform);
+  return await bookingPlatformIntegration.getExternalBookings(
+    request.params.platform
+  );
+});
+
+fastify.post("/api/external-bookings/sync", async () => {
+  return await bookingPlatformIntegration.syncAllPlatforms();
+});
+
+// Staff endpoints
+fastify.get("/api/staff", async () => {
+  return await staffService.getAllStaff(prisma);
+});
+
+fastify.post("/api/staff/shifts", async (request: any) => {
+  return await staffService.createShift(prisma, request.body);
+});
+
+// Task endpoints
+fastify.get("/api/tasks", async () => {
+  return await taskService.getAllTasks(prisma);
+});
+
+fastify.post("/api/tasks", async (request: any) => {
+  return await taskService.createTask(prisma, request.body);
+});
+
+// Maintenance endpoints
+fastify.get("/api/maintenance", async () => {
+  return await maintenanceService.getAllLogs(prisma);
+});
+
+fastify.post("/api/maintenance", async (request: any) => {
+  return await maintenanceService.createMaintenanceLog(prisma, request.body);
 });
 
 const start = async () => {
   try {
-    console.log("Server listening on port 3001");
-    await fastify.listen({ port: 3001 });
-    fastify.log.info(`server listening on ${fastify.server.address()}`);
+    await fastify.listen({ port: 4000 });
+    console.log("Server listening on port 4000");
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);

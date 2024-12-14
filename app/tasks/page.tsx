@@ -1,75 +1,77 @@
-// "use client";
+"use client"
 
-// import { taskColumns } from "@/components/bookings/columns";
-// import { DataTable } from "@/components/bookings/data-table";
-// import { TaskBoard } from "@/components/tasks/task-board";
-// import { Button } from "@/components/ui/button";
-// import { Card } from "@/components/ui/card";
-// import { Plus } from "lucide-react";
-// import { useState } from "react";
-
-// const tasks = [
-//   {
-//     id: "1",
-//     title: "Clean Room 101",
-//     assignedTo: "Jane Doe",
-//     priority: "HIGH",
-//     status: "PENDING",
-//     dueDate: new Date("2024-03-21"),
-//   },
-//   // Add more sample tasks
-// ];
-
-// export default function TasksPage()
-// {
-//   const [view, setView] = useState<"list" | "board">("board");
-
-//   return (
-//     <div className="space-y-6">
-//       <div className="flex justify-between items-center">
-//         <h1 className="text-3xl font-bold">Tasks</h1>
-//         <div className="flex gap-4">
-//           <div className="flex rounded-lg border">
-//             <Button
-//               variant={view === "list" ? "default" : "ghost"}
-//               size="sm"
-//               onClick={() => setView("list")}
-//             >
-//               List
-//             </Button>
-//             <Button
-//               variant={view === "board" ? "default" : "ghost"}
-//               size="sm"
-//               onClick={() => setView("board")}
-//             >
-//               Board
-//             </Button>
-//           </div>
-//           <Button>
-//             <Plus className="mr-2 h-4 w-4" />
-//             New Task
-//           </Button>
-//         </div>
-//       </div>
-
-//       {view === "list" ? (
-//         <Card className="p-6">
-//           <DataTable columns={taskColumns} data={tasks} />
-//         </Card>
-//       ) : (
-//         <TaskBoard tasks={tasks} />
-//       )}
-//     </div>
-//   );
-// }
+import { AddTaskDialog } from "@/components/tasks/add-task-dialog"
+import { taskColumns } from "@/components/tasks/columns"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { DataTable } from "@/components/ui/data-table"
+import { createTask, fetchTasks, updateTaskStatus } from "@/lib/api"
+import { Task } from "@/types"
+import { Plus } from 'lucide-react'
+import { useEffect, useState } from "react"
 
 export default function TasksPage()
 {
+    const [tasks, setTasks] = useState<Task[]>([])
+    const [isAddTaskDialogOpen, setIsAddTaskDialogOpen] = useState(false)
+
+    useEffect(() =>
+    {
+        const loadTasks = async () =>
+        {
+            const data = await fetchTasks()
+            setTasks(data)
+        }
+        loadTasks()
+    }, [])
+
+    const handleAddTask = async (taskData: Partial<Task>) =>
+    {
+        try {
+            const newTask = await createTask(taskData)
+            setTasks([...tasks, newTask])
+            setIsAddTaskDialogOpen(false)
+        } catch (error) {
+            console.error("Failed to add task:", error)
+        }
+    }
+
+    const handleUpdateTaskStatus = async (taskId: string, status: string) =>
+    {
+        try {
+            const updatedTask = await updateTaskStatus(taskId, status)
+            setTasks(tasks.map(task => task.id === updatedTask.id ? updatedTask : task))
+        } catch (error) {
+            console.error("Failed to update task status:", error)
+        }
+    }
+
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold">Tasks</h1>
+                <h1 className="text-3xl font-bold">Task Management</h1>
+                <Button onClick={() => setIsAddTaskDialogOpen(true)}>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Task
+                </Button>
             </div>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Tasks</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <DataTable
+                        columns={taskColumns}
+                        data={tasks}
+                    />
+                </CardContent>
+            </Card>
+            <AddTaskDialog
+                isOpen={isAddTaskDialogOpen}
+                onClose={() => setIsAddTaskDialogOpen(false)}
+                onAddTask={handleAddTask}
+            />
         </div>
-    );
+    )
 }
+

@@ -1,21 +1,12 @@
-"use client";
+"use client"
 
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
-import
-{
-  BarChart3,
-  BedDouble,
-  CalendarDays,
-  ClipboardList,
-  Hotel,
-  Settings,
-  Users,
-} from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import ModeToggle from "./mode-toggle";
+import ModeToggle from "@/components/mode-toggle"
+import { Button } from "@/components/ui/button"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { cn } from "@/lib/utils"
+import { BarChart3, BedDouble, CalendarDays, Globe, Hotel, Settings, PenToolIcon as Tool, Users } from 'lucide-react'
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 const routes = [
   {
@@ -38,49 +29,62 @@ const routes = [
     icon: Users,
     href: "/staff",
   },
+  // {
+  //   label: "Tasks",
+  //   icon: ClipboardList,
+  //   href: "/tasks",
+  // },
   {
-    label: "Tasks",
-    icon: ClipboardList,
-    href: "/tasks",
+    label: "Maintenance",
+    icon: Tool,
+    href: "/maintenance",
   },
   {
     label: "Settings",
     icon: Settings,
     href: "/settings",
   },
-];
+  {
+    label: "External Bookings",
+    icon: Globe,
+    href: "/external-bookings",
+  },
+]
 
 export default function Sidebar()
 {
-  const pathname = usePathname();
+  const pathname = usePathname()
 
   return (
-    <div className="h-full flex-1">
-      <div className="px-3 py-2">
-        <Link href="/dashboard" className="flex items-center pl-3 mb-14">
-          <Hotel className="h-8 w-8" />
-          <h1 className="text-2xl font-bold ml-2 pr-4">HMS</h1>
-          <ModeToggle />
+    <div className="flex h-full w-64 flex-col border-r bg-background">
+      <div className="flex items-center justify-between p-4">
+        <Link href="/dashboard" className="flex items-center space-x-2">
+          <Hotel className="h-6 w-6" />
+          <span className="text-lg font-bold">HMS</span>
         </Link>
-        <ScrollArea className="flex-1">
+        <ModeToggle />
+      </div>
+      <ScrollArea className="flex-1 px-3">
+        <nav className="flex flex-col space-y-1">
           {routes.map((route) => (
             <Button
               key={route.href}
               variant={pathname === route.href ? "secondary" : "ghost"}
               className={cn(
-                "w-full justify-start mb-1",
-                pathname === route.href && "bg-white/10"
+                "justify-start",
+                pathname === route.href && "bg-muted"
               )}
               asChild
             >
               <Link href={route.href}>
-                <route.icon className="h-5 w-5 mr-3" />
+                <route.icon className="mr-2 h-4 w-4" />
                 {route.label}
               </Link>
             </Button>
           ))}
-        </ScrollArea>
-      </div>
+        </nav>
+      </ScrollArea>
     </div>
-  );
+  )
 }
+

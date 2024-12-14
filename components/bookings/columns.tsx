@@ -1,71 +1,69 @@
-"use client";
+"use client"
 
-import { ColumnDef } from "@tanstack/react-table";
-import { Badge } from "@/components/ui/badge";
-import { format } from "date-fns";
-
-export type Booking = {
-  id: string;
-  guestName: string;
-  roomNumber: string;
-  checkIn: Date;
-  checkOut: Date;
-  status: string;
-  source: string;
-  totalAmount: number;
-};
+import { Badge } from "@/components/ui/badge"
+import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
+import { Booking } from "@/types"
+import { ColumnDef } from "@tanstack/react-table"
+import { format } from "date-fns"
 
 export const bookingColumns: ColumnDef<Booking>[] = [
   {
-    accessorKey: "guestName",
-    header: "Guest Name",
+    accessorKey: "id",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Booking ID" />
+    ),
   },
   {
-    accessorKey: "roomNumber",
-    header: "Room",
+    accessorKey: "guestName",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Guest Name" />
+    ),
+  },
+  {
+    accessorKey: "room.number",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Room Number" />
+    ),
   },
   {
     accessorKey: "checkIn",
-    header: "Check In",
-    cell: ({ row }) => format(row.original.checkIn, "MMM dd, yyyy"),
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Check-in" />
+    ),
+    cell: ({ row }) => format(new Date(row.getValue("checkIn")), "PPP"),
   },
   {
     accessorKey: "checkOut",
-    header: "Check Out",
-    cell: ({ row }) => format(row.original.checkOut, "MMM dd, yyyy"),
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Check-out" />
+    ),
+    cell: ({ row }) => format(new Date(row.getValue("checkOut")), "PPP"),
   },
   {
     accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => (
-      <Badge variant={getStatusVariant(row.original.status)}>
-        {row.original.status}
-      </Badge>
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
     ),
-  },
-  {
-    accessorKey: "source",
-    header: "Source",
-    cell: ({ row }) => (
-      <Badge variant="outline">{row.original.source}</Badge>
-    ),
+    cell: ({ row }) =>
+    {
+      const status = row.getValue("status") as string
+      return <Badge variant={status === "CONFIRMED" ? "default" : "destructive"}>{status}</Badge>
+    },
   },
   {
     accessorKey: "totalAmount",
-    header: "Amount",
-    cell: ({ row }) => `$${row.original.totalAmount}`,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Total Amount" />
+    ),
+    cell: ({ row }) =>
+    {
+      const amount = parseFloat(row.getValue("totalAmount"))
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(amount)
+      return <div className="font-medium">{formatted}</div>
+    },
   },
-];
+]
 
-function getStatusVariant(status: string): "default" | "destructive" | "outline" | "secondary" {
-  switch (status) {
-    case "CONFIRMED":
-      return "default";
-    case "CANCELLED":
-      return "destructive";
-    case "CHECKED_IN":
-      return "secondary";
-    default:
-      return "outline";
-  }
-}
