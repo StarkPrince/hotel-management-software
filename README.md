@@ -46,8 +46,8 @@ A modern, free, and open-source hotel management software built to streamline op
 ### Installation  
 1. Clone the repository:  
    ```bash
-   git clone https://github.com/starkprince/hotel-management-software.git
-   cd hotel-management-software
+   git clone https://github.com/Mithilastack/spirit.git
+   cd spirit
 
 2.  Install dependencies:
     
