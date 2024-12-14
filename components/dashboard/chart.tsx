@@ -1,7 +1,7 @@
 "use client"
 
+import { fetchRevenueChart } from "@/api"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { fetchRevenueChart } from "@/lib/api"
 import { useEffect, useState } from "react"
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 

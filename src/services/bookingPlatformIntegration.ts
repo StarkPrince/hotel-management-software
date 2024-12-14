@@ -3,16 +3,16 @@ import axios from "axios";
 
 const PLATFORM_APIS: any = {
   [BookingSource.BOOKING_COM]: {
-    baseUrl: process.env.BOOKING_COM_API_URL,
-    apiKey: process.env.BOOKING_COM_API_KEY,
+    baseUrl: process.env["BOOKING_COM_API_URL"],
+    apiKey: process.env["BOOKING_COM_API_KEY"],
   },
   [BookingSource.MAKEMYTRIP]: {
-    baseUrl: process.env.MAKEMYTRIP_API_URL,
-    apiKey: process.env.MAKEMYTRIP_API_KEY,
+    baseUrl: process.env["MAKEMYTRIP_API_URL"],
+    apiKey: process.env["MAKEMYTRIP_API_KEY"],
   },
   [BookingSource.EXPEDIA]: {
-    baseUrl: process.env.EXPEDIA_API_URL,
-    apiKey: process.env.EXPEDIA_API_KEY,
+    baseUrl: process.env["EXPEDIA_API_URL"],
+    apiKey: process.env["EXPEDIA_API_KEY"],
   },
 };
 

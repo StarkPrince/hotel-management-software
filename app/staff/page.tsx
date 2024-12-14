@@ -1,5 +1,6 @@
 "use client"
 
+import { createShift, fetchStaff } from "@/api"
 import { AddShiftDialog } from "@/components/staff/add-shit-dialog"
 import { staffColumns } from "@/components/staff/columns"
 import { shiftColumns } from "@/components/staff/shift-columns"
@@ -8,7 +9,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { DataTable } from "@/components/ui/data-table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { createShift, fetchStaff } from "@/lib/api"
 import { Shift, Staff } from "@/types"
 import { Plus } from 'lucide-react'
 import { useEffect, useState } from "react"

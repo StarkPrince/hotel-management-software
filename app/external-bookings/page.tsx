@@ -1,10 +1,10 @@
 "use client"
 
+import { fetchExternalBookings } from "@/api"
 import { externalBookingColumns } from "@/components/bookings/external-columns"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { DataTable } from "@/components/ui/data-table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { fetchExternalBookings } from "@/lib/api"
 import { ExternalBooking } from "@/types"
 import { useEffect, useState } from "react"
 

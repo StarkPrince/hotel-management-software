@@ -1,6 +1,5 @@
 import { Room } from "@/types";
-
-const BASE_URL = "http://localhost:4000/api";
+import { BASE_URL } from "../config";
 
 export async function fetchDashboardStats() {
   const response = await fetch(`${BASE_URL}/dashboard/stats`);
@@ -194,14 +193,6 @@ export async function updateRoom(roomId: string, roomData: Partial<Room>) {
   });
   if (!response.ok) {
     throw new Error("Failed to update room");
-  }
-  return response.json();
-}
-
-export async function fetchAmenities() {
-  const response = await fetch(`${BASE_URL}/amenities`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch amenities");
   }
   return response.json();
 }

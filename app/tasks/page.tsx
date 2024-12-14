@@ -1,11 +1,11 @@
 "use client"
 
+import { createTask, fetchTasks, updateTaskStatus } from "@/api"
 import { AddTaskDialog } from "@/components/tasks/add-task-dialog"
 import { taskColumns } from "@/components/tasks/columns"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { DataTable } from "@/components/ui/data-table"
-import { createTask, fetchTasks, updateTaskStatus } from "@/lib/api"
 import { Task } from "@/types"
 import { Plus } from 'lucide-react'
 import { useEffect, useState } from "react"

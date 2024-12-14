@@ -6,7 +6,6 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { fetchAmenities } from "@/lib/api"
 import { Amenity, Room, RoomStatus, RoomType } from "@/types"
 import { useEffect, useState } from "react"
 
@@ -41,8 +40,8 @@ export function EditRoomDialog({ isOpen, onClose, onEditRoom, room }: EditRoomDi
     {
         const loadAmenities = async () =>
         {
-            const data = await fetchAmenities()
-            setAmenities(data)
+            // const data = await fetchAmenities()
+            // setAmenities(data)
         }
         loadAmenities()
     }, [])

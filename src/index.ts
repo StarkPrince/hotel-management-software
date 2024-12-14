@@ -42,7 +42,7 @@ fastify.get("/api/rooms/:id", async (request: any) => {
   return await roomService.getRoomById(prisma, request.params.id);
 });
 
-fastify.post("/api/rooms", async (request: any, reply: any) => {
+fastify.post("/api/rooms", async (request: any, _: any) => {
   return await roomService.createRoom(prisma, request.body);
 });
 
@@ -55,7 +55,7 @@ fastify.get("/api/bookings", async () => {
   return await bookingService.getAllBookings(prisma);
 });
 
-fastify.post("/api/bookings", async (request: any, reply: any) => {
+fastify.post("/api/bookings", async (request: any, _: any) => {
   return await bookingService.createBooking(prisma, request.body);
 });
 

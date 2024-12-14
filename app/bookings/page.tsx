@@ -1,11 +1,11 @@
 "use client"
 
+import { createBooking, fetchBookings } from "@/api"
 import { AddBookingDialog } from "@/components/bookings/add-booking-dialog"
 import { bookingColumns } from "@/components/bookings/columns"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { DataTable } from "@/components/ui/data-table"
-import { createBooking, fetchBookings } from "@/lib/api"
 import { Booking } from "@/types"
 import { Plus } from 'lucide-react'
 import { useEffect, useState } from "react"

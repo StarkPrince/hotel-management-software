@@ -1,5 +1,6 @@
 "use client"
 
+import { createRoom, fetchRooms, updateRoom } from "@/api"
 import { AddRoomDialog } from "@/components/rooms/add-room-dialog"
 import { roomColumns } from "@/components/rooms/columns"
 import { EditRoomDialog } from "@/components/rooms/edit-room-dialog"
@@ -7,7 +8,6 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { DataTable } from "@/components/ui/data-table"
-import { createRoom, fetchRooms, updateRoom } from "@/lib/api"
 import { Room, RoomStatus } from "@/types"
 import { Plus } from 'lucide-react'
 import { useEffect, useState } from "react"

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "server": "tsx watch server/index.ts"
+    "server": "tsx watch src/index.ts"
   },
   "dependencies": {
     "@fastify/cors": "^10.0.1",

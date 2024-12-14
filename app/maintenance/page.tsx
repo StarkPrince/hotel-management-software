@@ -1,11 +1,11 @@
 "use client"
 
+import { createMaintenance, fetchMaintenance, updateMaintenanceStatus } from "@/api"
 import { AddMaintenanceDialog } from "@/components/maintenance/add-maintenance-dialog"
 import { maintenanceColumns } from "@/components/maintenance/columns"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { DataTable } from "@/components/ui/data-table"
-import { createMaintenance, fetchMaintenance, updateMaintenanceStatus } from "@/lib/api"
 import { MaintenanceLog, TaskStatus } from "@/types"
 import { Plus } from 'lucide-react'
 import { useEffect, useState } from "react"
