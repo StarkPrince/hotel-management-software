@@ -8,6 +8,8 @@ import { maintenanceService } from "./services/maintenanceService";
 import { roomService } from "./services/roomService";
 import { staffService } from "./services/staffService";
 import { taskService } from "./services/taskService";
+import dotenv from "dotenv";
+dotenv.config();
 
 const fastify = Fastify({
   logger: true,
@@ -105,10 +107,10 @@ fastify.get("/api/maintenance", async () => {
 fastify.post("/api/maintenance", async (request: any) => {
   return await maintenanceService.createMaintenanceLog(prisma, request.body);
 });
-
+const BACKEND_PORT = process.env.BACKEND_PORT || 4000;
 const start = async () => {
   try {
-    await fastify.listen({ port: 4000 });
+    await fastify.listen({ port : BACKEND_PORT as number });
     console.log("Server listening on port 4000");
   } catch (err) {
     fastify.log.error(err);

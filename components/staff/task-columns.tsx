@@ -51,7 +51,7 @@ export const taskColumns: ColumnDef<Task>[] = [
         cell: ({ row }) =>
         {
             const status = row.getValue("status") as string
-            return <Badge variant={status === "COMPLETED" ? "success" : "default"}>{status}</Badge>
+            return <Badge variant={"default"}>{status}</Badge>
         },
     },
 ]
