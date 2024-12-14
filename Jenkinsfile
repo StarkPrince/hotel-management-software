@@ -26,7 +26,7 @@ pipeline {
                     sudo apt-get update
                     echo "successfully ssh into the server"
 
-                    sudo rm -rf spirit / || {
+                    sudo rm -rf spirit/ || {
                         echo 'Failed to remove existing directory.'
                         exit 1
                     }
