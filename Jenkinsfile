@@ -99,7 +99,7 @@ pipeline {
                 // Define recipients
                 def recipients = [
                     'itsonlykartik@gmail.com',
-                    'aashutoshjha41@gmail.com',
+                    'games.princeraj@gmail.com',
                 ]
                 
                 // Create the email body
@@ -122,7 +122,7 @@ pipeline {
                             </div>
                             
                             <div class="content">
-                                <p>Check the <a href="${env.BUILD_URL}">console output</a> for full details.</p>
+                                <p>Check the <a href="${env.BUILD_URL}">console output</a> for full details and use username: team_mithilastack and Password: Mithilastack@12112024.</p>
                                 <h4>Failed Steps:</h4>
                                 <pre></pre>
                                 <h4>Errors:</h4>
