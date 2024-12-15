@@ -110,7 +110,7 @@ fastify.get("/api/maintenance", async () => {
 fastify.post("/api/maintenance", async (request: any) => {
   return await maintenanceService.createMaintenanceLog(prisma, request.body);
 });
-
+const BACKEND_PORT = process.env.BACKEND_PORT || 4000;
 const start = async () => {
   try {
     await fastify.listen({ port: PORT });
