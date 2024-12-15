@@ -1,0 +1,33 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "build/**",
+        "api/**",
+        "public/build/**"
+      ],
+      "dependsOn": ["^build"],
+      "env": ["DATABASE_URL", "PORT"]
+    },
+    "test": {
+      "outputs": ["coverage/**"],
+      "dependsOn": [],
+      "env": ["DATABASE_URL"]
+    },
+    "lint": {
+      "dependsOn": ["^build"],
+      "outputs": [],
+      "env": ["DATABASE_URL"]
+    },
+    "dev": {
+      "cache": false,
+      "env": ["DATABASE_URL", "PORT"]
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}
