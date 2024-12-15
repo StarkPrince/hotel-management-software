@@ -1,8 +1,8 @@
 import { RoomStatus, RoomType } from "../enum";
-import PrismaClient from "../prisma";
+import prisma from "../prisma";
 
 export const roomService = {
-  async getAllRooms(prisma: PrismaClient) {
+  async getAllRooms() {
     return await prisma.room.findMany({
       include: {
         amenities: true,
@@ -22,7 +22,7 @@ export const roomService = {
     });
   },
 
-  async getRoomById(prisma: PrismaClient, id: string) {
+  async getRoomById(id: string) {
     return await prisma.room.findUnique({
       where: { id },
       include: {
@@ -34,7 +34,7 @@ export const roomService = {
     });
   },
 
-  async createRoom(prisma: PrismaClient, data: any) {
+  async createRoom(data: any) {
     return await prisma.room.create({
       data: {
         number: data.number,
@@ -51,7 +51,7 @@ export const roomService = {
     });
   },
 
-  async updateRoom(prisma: PrismaClient, id: string, data: any) {
+  async updateRoom(id: string, data: any) {
     return await prisma.room.update({
       where: { id },
       data: {

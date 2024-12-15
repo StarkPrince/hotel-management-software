@@ -1,7 +1,7 @@
-import PrismaClient from "../prisma";
+import prisma from "../prisma";
 
 export const staffService = {
-  async getAllStaff(prisma: PrismaClient) {
+  async getAllStaff() {
     return await prisma.user.findMany({
       include: {
         department: true,
@@ -23,7 +23,7 @@ export const staffService = {
     });
   },
 
-  async createShift(prisma: PrismaClient, data: any) {
+  async createShift(data: any) {
     return await prisma.staffShift.create({
       data: {
         staffId: data.staffId,

@@ -1,8 +1,8 @@
 import { Priority, TaskStatus } from "../enum";
-import PrismaClient from "../prisma";
+import prisma from "../prisma";
 
 export const taskService = {
-  async getAllTasks(prisma: PrismaClient) {
+  async getAllTasks() {
     return await prisma.task.findMany({
       include: {
         assignedTo: true,
@@ -18,7 +18,7 @@ export const taskService = {
     });
   },
 
-  async createTask(prisma: PrismaClient, data: any) {
+  async createTask(data: any) {
     return await prisma.task.create({
       data: {
         title: data.title,

@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import { PrismaClient } from "@prisma/client";
 
 declare global {
@@ -7,11 +10,11 @@ declare global {
 const prisma =
   global.prisma ||
   new PrismaClient({
-    log: ["query", "info", "warn", "error"], // Enable logging for debugging (optional)
+    log: ["query", "info", "warn", "error"],
   });
 
 if (process.env.NODE_ENV !== "production") {
   global.prisma = prisma;
 }
 
-export default PrismaClient;
+export default prisma;

@@ -1,7 +1,6 @@
 import cors from "@fastify/cors";
 import dotenv from "dotenv";
 import Fastify from "fastify";
-import PrismaClient from "./prisma";
 import { bookingPlatformIntegration } from "./services/bookingPlatformIntegration";
 import { bookingService } from "./services/bookingService";
 import { dashboardService } from "./services/dashboardService";
@@ -22,8 +21,6 @@ fastify.register(cors, {
   origin: "*",
 });
 
-const prisma = new PrismaClient();
-
 // Health check endpoint
 fastify.get("/health", async () => {
   return { status: "ok" };
@@ -31,42 +28,41 @@ fastify.get("/health", async () => {
 
 // Dashboard endpoints
 fastify.get("/api/dashboard/stats", async () => {
-  return await dashboardService.getStats(prisma);
+  return await dashboardService.getStats();
 });
 
 fastify.get("/api/dashboard/revenue-chart", async () => {
-  return await dashboardService.getRevenueChart(prisma);
+  return await dashboardService.getRevenueChart();
 });
 
 // Room endpoints
 fastify.get("/api/rooms", async () => {
-  return await roomService.getAllRooms(prisma);
+  return await roomService.getAllRooms();
 });
 
 fastify.get("/api/rooms/:id", async (request: any) => {
-  return await roomService.getRoomById(prisma, request.params.id);
+  return await roomService.getRoomById(request.params.id);
 });
 
 fastify.post("/api/rooms", async (request: any, _: any) => {
-  return await roomService.createRoom(prisma, request.body);
+  return await roomService.createRoom(request.body);
 });
 
 fastify.put("/api/rooms/:id", async (request: any) => {
-  return await roomService.updateRoom(prisma, request.params.id, request.body);
+  return await roomService.updateRoom(request.params.id, request.body);
 });
 
 // Booking endpoints
 fastify.get("/api/bookings", async () => {
-  return await bookingService.getAllBookings(prisma);
+  return await bookingService.getAllBookings();
 });
 
 fastify.post("/api/bookings", async (request: any, _: any) => {
-  return await bookingService.createBooking(prisma, request.body);
+  return await bookingService.createBooking(request.body);
 });
 
 fastify.put("/api/bookings/:id/status", async (request: any) => {
   return await bookingService.updateBookingStatus(
-    prisma,
     request.params.id,
     request.body.status
   );
@@ -86,29 +82,29 @@ fastify.post("/api/external-bookings/sync", async () => {
 
 // Staff endpoints
 fastify.get("/api/staff", async () => {
-  return await staffService.getAllStaff(prisma);
+  return await staffService.getAllStaff();
 });
 
 fastify.post("/api/staff/shifts", async (request: any) => {
-  return await staffService.createShift(prisma, request.body);
+  return await staffService.createShift(request.body);
 });
 
 // Task endpoints
 fastify.get("/api/tasks", async () => {
-  return await taskService.getAllTasks(prisma);
+  return await taskService.getAllTasks();
 });
 
 fastify.post("/api/tasks", async (request: any) => {
-  return await taskService.createTask(prisma, request.body);
+  return await taskService.createTask(request.body);
 });
 
 // Maintenance endpoints
 fastify.get("/api/maintenance", async () => {
-  return await maintenanceService.getAllLogs(prisma);
+  return await maintenanceService.getAllLogs();
 });
 
 fastify.post("/api/maintenance", async (request: any) => {
-  return await maintenanceService.createMaintenanceLog(prisma, request.body);
+  return await maintenanceService.createMaintenanceLog(request.body);
 });
 const BACKEND_PORT = process.env.BACKEND_PORT || 4000;
 const start = async () => {

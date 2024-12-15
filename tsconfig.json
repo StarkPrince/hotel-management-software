@@ -18,7 +18,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/prisma": ["./apps/server/src/prisma"]
     },
     "target": "ESNext",
     "module": "ESNext",

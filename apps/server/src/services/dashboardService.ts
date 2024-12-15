@@ -1,7 +1,7 @@
-import PrismaClient from "../prisma";
+import prisma from "../prisma";
 
 export const dashboardService = {
-  async getStats(prisma: PrismaClient) {
+  async getStats() {
     const [totalRooms, occupiedRooms, activeBookings, totalRevenue] =
       await Promise.all([
         prisma.room.count(),
@@ -37,7 +37,7 @@ export const dashboardService = {
     };
   },
 
-  async getRevenueChart(prisma: PrismaClient) {
+  async getRevenueChart() {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 

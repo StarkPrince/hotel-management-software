@@ -1,8 +1,8 @@
 import { Priority, TaskStatus } from "../enum";
-import PrismaClient from "../prisma";
+import prisma from "../prisma";
 
 export const maintenanceService = {
-  async getAllLogs(prisma: PrismaClient) {
+  async getAllLogs() {
     return await prisma.maintenanceLog.findMany({
       include: {
         room: true,
@@ -18,7 +18,7 @@ export const maintenanceService = {
     });
   },
 
-  async createMaintenanceLog(prisma: PrismaClient, data: any) {
+  async createMaintenanceLog(data: any) {
     const log = await prisma.maintenanceLog.create({
       data: {
         roomId: data.roomId,

@@ -1,8 +1,8 @@
 import { BookingStatus } from "../enum";
-import PrismaClient from "../prisma";
+import prisma from "../prisma"; // Adjust the import path as needed
 
 export const bookingService = {
-  async getAllBookings(prisma: PrismaClient) {
+  async getAllBookings() {
     return await prisma.booking.findMany({
       include: {
         room: true,
@@ -14,7 +14,7 @@ export const bookingService = {
     });
   },
 
-  async createBooking(prisma: PrismaClient, data: any) {
+  async createBooking(data: any) {
     const booking = await prisma.booking.create({
       data: {
         guestName: data.guestName,
@@ -40,11 +40,7 @@ export const bookingService = {
     return booking;
   },
 
-  async updateBookingStatus(
-    prisma: PrismaClient,
-    id: string,
-    status: BookingStatus
-  ) {
+  async updateBookingStatus(id: string, status: BookingStatus) {
     const booking = await prisma.booking.update({
       where: { id },
       data: { status },
