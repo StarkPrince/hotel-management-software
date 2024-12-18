@@ -12,22 +12,22 @@ const routes = [
   {
     label: "Dashboard",
     icon: BarChart3,
-    href: "/dashboard",
+    href: "/",
   },
   {
     label: "Rooms",
     icon: BedDouble,
-    href: "/rooms",
+    href: "/admin/rooms",
   },
   {
     label: "Bookings",
     icon: CalendarDays,
-    href: "/bookings",
+    href: "/admin/bookings",
   },
   {
     label: "Staff",
     icon: Users,
-    href: "/staff",
+    href: "/admin/staff",
   },
   // {
   //   label: "Tasks",
@@ -37,17 +37,17 @@ const routes = [
   {
     label: "Maintenance",
     icon: Tool,
-    href: "/maintenance",
+    href: "/admin/maintenance",
   },
   {
     label: "Settings",
     icon: Settings,
-    href: "/settings",
+    href: "/admin/settings",
   },
   {
     label: "External Bookings",
     icon: Globe,
-    href: "/external-bookings",
+    href: "/admin/external-bookings",
   },
 ]
 

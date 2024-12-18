@@ -27,7 +27,13 @@ export const externalBookingColumns: ColumnDef<ExternalBooking>[] = [
         cell: ({ row }) =>
         {
             const source = row.getValue("source") as string
-            return <Badge>{source.replace("_", ".")}</Badge>
+            try {
+
+                return <Badge>{source.replace("_", ".")}</Badge>
+            }
+            catch (error) {
+                return <Badge>{source}</Badge>
+            }
         },
     },
     {
@@ -35,14 +41,15 @@ export const externalBookingColumns: ColumnDef<ExternalBooking>[] = [
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Check-in" />
         ),
-        cell: ({ row }) => format(new Date(row.getValue("checkIn")), "PPP"),
+        cell: ({ row }) =>
+            format(new Date(row.getValue("checkIn") || new Date()), "PPP")
     },
     {
         accessorKey: "checkOut",
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Check-out" />
         ),
-        cell: ({ row }) => format(new Date(row.getValue("checkOut")), "PPP"),
+        cell: ({ row }) => format(new Date(row.getValue("checkIn") || new Date()), "PPP")
     },
     {
         accessorKey: "status",

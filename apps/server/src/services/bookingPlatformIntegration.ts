@@ -37,17 +37,20 @@ export const bookingPlatformIntegration = {
   },
 
   async syncAllPlatforms() {
-    const results = await Promise.allSettled(
-      Object.keys(PLATFORM_APIS).map((platform) =>
-        this.getExternalBookings(platform as BookingSource)
-      )
-    );
-
-    return results.map((result, index) => ({
-      platform: Object.keys(PLATFORM_APIS)[index],
-      success: result.status === "fulfilled",
-      data: result.status === "fulfilled" ? result.value : null,
-      error: result.status === "rejected" ? result.reason : null,
-    }));
+    try {
+      const results = await Promise.allSettled(
+        Object.keys(PLATFORM_APIS).map((platform) =>
+          this.getExternalBookings(platform as BookingSource)
+        )
+      );
+      return results.map((result, index) => ({
+        platform: Object.keys(PLATFORM_APIS)[index],
+        success: result.status === "fulfilled",
+        data: result.status === "fulfilled" ? result.value : null,
+        error: result.status === "rejected" ? result.reason : null,
+      }));
+    } catch (error) {
+      return [];
+    }
   },
 };

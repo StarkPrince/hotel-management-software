@@ -12,11 +12,12 @@ model User {
   name             String?
   email            String?            @unique
   password         String
-  role             UserRole           @default(STAFF)
+  role             UserRole           @default(STAFF) // Added VISITOR role
   department       Department?        @relation(fields: [departmentId], references: [id])
   departmentId     String?
   tasks            Task[]
   shifts           StaffShift[]
+  sessions         Session[] // New relation for managing user sessions
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
   CleaningSchedule CleaningSchedule[]
@@ -43,25 +44,6 @@ model Room {
   cleaningLogs    CleaningSchedule[]
   createdAt       DateTime           @default(now())
   updatedAt       DateTime           @updatedAt
-}
-
-model Booking {
-  id                String           @id @default(cuid())
-  room              Room             @relation(fields: [roomId], references: [id])
-  roomId            String
-  guestName         String
-  guestEmail        String
-  checkIn           DateTime
-  checkOut          DateTime
-  source            BookingSource
-  status            BookingStatus    @default(CONFIRMED)
-  totalAmount       Float
-  paymentStatus     PaymentStatus    @default(PENDING)
-  externalBookingId String? // For tracking external platform bookings
-  platformBooking   PlatformBooking?
-  specialRequests   String?
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
 }
 
 model PlatformBooking {
@@ -134,10 +116,24 @@ model Amenity {
   updatedAt   DateTime @updatedAt
 }
 
-enum UserRole {
-  ADMIN
-  MANAGER
-  STAFF
+model Booking {
+  id                String           @id @default(cuid())
+  room              Room             @relation(fields: [roomId], references: [id])
+  roomId            String
+  guestName         String
+  guestEmail        String
+  checkIn           DateTime
+  checkOut          DateTime
+  source            BookingSource
+  status            BookingStatus    @default(CONFIRMED)
+  totalAmount       Float
+  paymentStatus     PaymentStatus    @default(PENDING)
+  externalBookingId String?
+  platformBooking   PlatformBooking?
+  sessions          Session[]
+  specialRequests   String?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
 }
 
 enum RoomType {
@@ -196,4 +192,22 @@ enum ShiftStatus {
   IN_PROGRESS
   COMPLETED
   CANCELLED
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  booking   Booking  @relation(fields: [bookingId], references: [id])
+  bookingId String
+  jwt       String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  STAFF
+  VISITOR
 }
