@@ -36,6 +36,7 @@ export enum RoomType {
 }
 
 export enum BookingStatus {
+  PENDING = "PENDING",
   CONFIRMED = "CONFIRMED",
   CHECKED_IN = "CHECKED_IN",
   CHECKED_OUT = "CHECKED_OUT",
@@ -46,6 +47,7 @@ export enum UserRole {
   ADMIN = "ADMIN",
   MANAGER = "MANAGER",
   STAFF = "STAFF",
+  GUEST = "GUEST",
 }
 
 export enum PaymentStatus {
@@ -60,4 +62,22 @@ export enum ShiftStatus {
   IN_PROGRESS = "IN_PROGRESS",
   COMPLETED = "COMPLETED",
   CANCELLED = "CANCELLED",
+}
+
+export enum AmenityType {
+  POOL = "POOL",
+  GYM = "GYM",
+  SPA = "SPA",
+  RESTAURANT = "RESTAURANT",
+  PARKING = "PARKING",
+  WIFI = "WIFI",
+  ROOM_SERVICE = "ROOM_SERVICE",
+  LAUNDRY = "LAUNDRY",
+}
+
+export enum LogLevel {
+  VERBOSE = "VERBOSE",
+  INFO = "INFO",
+  WARN = "WARN",
+  ERROR = "ERROR",
 }

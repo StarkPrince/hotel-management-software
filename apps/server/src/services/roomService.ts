@@ -35,6 +35,16 @@ export const roomService = {
   },
 
   async createRoom(data: any) {
+    // check if room with same number already exists
+    const room = await prisma.room.findUnique({
+      where: { number: data.number },
+    });
+
+    if (room) {
+      console.log("Room already exists");
+      throw new Error("Room already exists");
+    }
+
     return await prisma.room.create({
       data: {
         number: data.number,
@@ -44,6 +54,7 @@ export const roomService = {
         amenities: {
           connect: data.amenityIds?.map((id: string) => ({ id })) || [],
         },
+        status: RoomStatus.AVAILABLE,
       },
       include: {
         amenities: true,

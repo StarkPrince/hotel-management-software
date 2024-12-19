@@ -1,15 +1,19 @@
 import { BookingStatus } from "../enum";
-import prisma from "../prisma"; // Adjust the import path as needed
+import prisma from "../prisma";
+import { verifyQRCode } from "../utils/qrCode";
 
 export const bookingService = {
   async getAllBookings() {
-    return await prisma.booking.findMany({
+    return prisma.booking.findMany({
       include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
         room: true,
-        platformBooking: true,
-      },
-      orderBy: {
-        checkIn: "asc",
       },
     });
   },
@@ -17,21 +21,38 @@ export const bookingService = {
   async createBooking(data: any) {
     const booking = await prisma.booking.create({
       data: {
+        user: {
+          connect: {
+            id: data.userId,
+          },
+        },
+        room: {
+          connect: {
+            id: data.roomId,
+          },
+        },
         guestName: data.guestName,
         guestEmail: data.guestEmail,
-        roomId: data.roomId,
         checkIn: new Date(data.checkIn),
         checkOut: new Date(data.checkOut),
-        source: data.source,
+        source: "DIRECT",
+        status: "CONFIRMED",
         totalAmount: data.totalAmount,
+        paymentStatus: "PENDING",
         specialRequests: data.specialRequests,
       },
       include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
         room: true,
       },
     });
 
-    // Update room status
     await prisma.room.update({
       where: { id: data.roomId },
       data: { status: "OCCUPIED" },
@@ -57,5 +78,9 @@ export const bookingService = {
     }
 
     return booking;
+  },
+
+  async verifyQRCode(qrCode: string) {
+    return verifyQRCode(qrCode);
   },
 };

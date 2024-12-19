@@ -1,30 +1,31 @@
-import { FastifyInstance } from "fastify";
-import { bookingPlatformIntegration } from "../services/bookingPlatformIntegration";
-import { bookingService } from "../services/bookingService";
+// booking.routes.ts
+import { FastifyPluginAsync } from "fastify";
+import BookingController from "../controller/booking.controller";
 
-export async function bookingRoutes(fastify: FastifyInstance) {
-  fastify.get("/api/bookings", async () => {
-    return await bookingService.getAllBookings();
+const bookingRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
+  fastify.get("/api/bookings", {
+    handler: BookingController.getAllBookings,
   });
 
-  fastify.post("/api/bookings", async (request: any) => {
-    return await bookingService.createBooking(request.body);
+  fastify.post("/api/bookings", {
+    handler: BookingController.createBooking,
   });
 
-  fastify.put("/api/bookings/:id/status", async (request: any) => {
-    return await bookingService.updateBookingStatus(
-      request.params.id,
-      request.body.status
-    );
+  fastify.post("/verify-qr", {
+    handler: BookingController.verifyQRCode,
   });
 
-  fastify.get("/api/external-bookings/sync", async () => {
-    return await bookingPlatformIntegration.syncAllPlatforms();
+  fastify.put("/api/bookings/:id/status", {
+    handler: BookingController.updateBookingStatus,
   });
 
-  fastify.get("/api/external-bookings/:platform", async (request: any) => {
-    return await bookingPlatformIntegration.getExternalBookings(
-      request.params.platform
-    );
+  fastify.get("/api/external-bookings/sync", {
+    handler: BookingController.syncAllPlatforms,
   });
-}
+
+  fastify.get("/api/external-bookings/:platform", {
+    handler: BookingController.getExternalBookings,
+  });
+};
+
+export default bookingRoutes;

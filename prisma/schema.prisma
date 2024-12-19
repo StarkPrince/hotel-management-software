@@ -12,7 +12,7 @@ model User {
   name             String?
   email            String?            @unique
   password         String
-  role             UserRole           @default(STAFF) // Added VISITOR role
+  role             UserRole           @default(GUEST)
   department       Department?        @relation(fields: [departmentId], references: [id])
   departmentId     String?
   tasks            Task[]
@@ -21,6 +21,8 @@ model User {
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
   CleaningSchedule CleaningSchedule[]
+  bookings         Booking[]
+  profile          Profile?
 }
 
 model Department {
@@ -38,12 +40,12 @@ model Room {
   status          RoomStatus         @default(AVAILABLE)
   floor           Int
   price           Float
-  amenities       Amenity[]
   maintenanceLogs MaintenanceLog[]
   bookings        Booking[]
   cleaningLogs    CleaningSchedule[]
   createdAt       DateTime           @default(now())
   updatedAt       DateTime           @updatedAt
+  amenities       RoomAmenity[]
 }
 
 model PlatformBooking {
@@ -108,12 +110,16 @@ model StaffShift {
 }
 
 model Amenity {
-  id          String   @id @default(cuid())
+  id          String         @id @default(cuid())
   name        String
   description String?
-  rooms       Room[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  category    AmenityType
+  isActive    Boolean        @default(true)
+  maxUsage    Int? // Maximum times amenity can be used per booking
+  rooms       RoomAmenity[]
+  usage       AmenityUsage[]
 }
 
 model Booking {
@@ -134,6 +140,9 @@ model Booking {
   specialRequests   String?
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
+  user              User             @relation(fields: [userId], references: [id])
+  userId            String
+  qrCode            String? // Generated QR code for access
 }
 
 enum RoomType {
@@ -157,13 +166,6 @@ enum BookingSource {
   GOIBIBO
   EXPEDIA
   OTHERS
-}
-
-enum BookingStatus {
-  CONFIRMED
-  CHECKED_IN
-  CHECKED_OUT
-  CANCELLED
 }
 
 enum TaskStatus {
@@ -195,19 +197,97 @@ enum ShiftStatus {
 }
 
 model Session {
+  id           String         @id @default(cuid())
+  userId       String
+  bookingId    String
+  jwt          String         @unique
+  expiresAt    DateTime
+  createdAt    DateTime       @default(now())
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  booking      Booking        @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  token        String         @unique
+  lastActivity DateTime       @default(now())
+  isActive     Boolean        @default(true)
+  updatedAt    DateTime       @updatedAt
+  amenityUsage AmenityUsage[]
+}
+
+model Profile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  phone       String?
+  address     String?
+  preferences Json? // Store user preferences as JSON
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model RoomAmenity {
   id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  booking   Booking  @relation(fields: [bookingId], references: [id])
-  bookingId String
-  jwt       String   @unique
-  expiresAt DateTime
+  roomId    String
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  amenityId String
+  amenity   Amenity  @relation(fields: [amenityId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+
+  @@unique([roomId, amenityId])
+}
+
+model AmenityUsage {
+  id        String   @id @default(cuid())
+  sessionId String
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  amenityId String
+  amenity   Amenity  @relation(fields: [amenityId], references: [id], onDelete: Cascade)
+  usedAt    DateTime @default(now())
+
+  @@unique([sessionId, amenityId, usedAt])
 }
 
 enum UserRole {
   ADMIN
   MANAGER
   STAFF
-  VISITOR
+  GUEST
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CHECKED_IN
+  CHECKED_OUT
+  CANCELLED
+}
+
+enum AmenityType {
+  POOL
+  GYM
+  SPA
+  RESTAURANT
+  PARKING
+  WIFI
+  ROOM_SERVICE
+  LAUNDRY
+}
+
+model Log {
+  id        String   @id @default(cuid())
+  userId    String?
+  ipAddress String? // IP address of the user
+  objectId  String // ID of the object being acted upon
+  action    String // Action being performed
+  level     LogLevel // Log level (e.g., INFO, WARN, ERROR)
+  message   String // Description or message of the log
+  timestamp DateTime @default(now()) // Time when the log was created
+
+  @@index([timestamp]) // Index for querying logs by timestamp
+}
+
+// Enum for Log Levels
+enum LogLevel {
+  VERBOSE
+  INFO
+  WARN
+  ERROR
 }

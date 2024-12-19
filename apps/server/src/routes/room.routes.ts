@@ -1,20 +1,22 @@
-import { FastifyInstance } from "fastify";
-import { roomService } from "../services/roomService";
+import { FastifyPluginAsync } from "fastify";
+import RoomController from "../controller/room.controller";
 
-export async function roomRoutes(fastify: FastifyInstance) {
-  fastify.get("/api/rooms", async () => {
-    return await roomService.getAllRooms();
+const roomRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
+  fastify.get("/api/rooms", {
+    handler: RoomController.getAllRooms,
   });
 
-  fastify.get("/api/rooms/:id", async (request: any) => {
-    return await roomService.getRoomById(request.params.id);
+  fastify.get("/api/rooms/:id", {
+    handler: RoomController.getRoomById,
   });
 
-  fastify.post("/api/rooms", async (request: any) => {
-    return await roomService.createRoom(request.body);
+  fastify.post("/api/rooms", {
+    handler: RoomController.createRoom,
   });
 
-  fastify.put("/api/rooms/:id", async (request: any) => {
-    return await roomService.updateRoom(request.params.id, request.body);
+  fastify.put("/api/rooms/:id", {
+    handler: RoomController.updateRoom,
   });
-}
+};
+
+export default roomRoutes;

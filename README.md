@@ -187,37 +187,28 @@ These services are under apps whose build is managed by Turborepo which help imp
 
   
 
-| **Category** | **Technology** | **Purpose** |
-
-| **Framework** | `Next.js` | Framework for building server-rendered React applications. |
-
-| **UI Library** | `@radix-ui/react-*` | Components for building accessible, customizable UI elements. |
-
-| **State Management** | `react-hook-form` | Managing form state and validation. |
-
-| **Styling** | `tailwindcss` | Utility-first CSS framework for styling. |
-
-| **Server** | `fastify` | Web framework for building fast and scalable server APIs. |
-
-| **Database ORM** | `Prisma` | ORM for database interaction (PostgreSQL). |
-
-| **Authentication** | `next-auth` | Authentication for Next.js applications. |
-
-| **Data Fetching** | `SWR` | Stale-while-revalidate data fetching library. |
-
-| **Validation** | `zod` | Schema-based data validation. |
-
-| **Charts** | `recharts` | Library for building responsive charts and graphs. |
-
-| **Forms** | `@hookform/resolvers` | Resolver integration for React Hook Form with Zod validation. |
-
-| **HTTP Client** | `axios` | Promise-based HTTP client for API requests. |
-
-| **TypeScript** | `typescript` | Strongly typed JavaScript for application development. |
-
-| **Linting** | `eslint` | Linting tool for maintaining code quality. |
-
-| **Build Tools** | `postcss`, `autoprefixer` | Tools for processing and optimizing CSS. |
+| **Category**            | **Technology**               | **Purpose**                                                                 |
+|--------------------------|------------------------------|-----------------------------------------------------------------------------|
+| **Framework**            | `Next.js`                   | Framework for building server-rendered React applications.                 |
+| **UI Library**           | `@radix-ui/react-*`         | Accessible, customizable UI components.                                    |
+| **State Management**     | `react-hook-form`           | Managing form state and validation.                                        |
+| **Styling**              | `tailwindcss`               | Utility-first CSS framework for styling.                                   |
+| **Server**               | `fastify`                   | High-performance web framework for building server APIs.                   |
+| **Database ORM**         | `Prisma`                    | ORM for database interaction (PostgreSQL).                                 |
+| **Authentication**       | `next-auth`                 | Authentication for Next.js applications.                                   |
+| **Data Fetching**        | `SWR`                       | Stale-while-revalidate data fetching library.                              |
+| **Validation**           | `zod`                       | Schema-based data validation.                                              |
+| **Charts**               | `recharts`                  | Library for building responsive charts and graphs.                         |
+| **Forms**                | `@hookform/resolvers`       | Resolver integration for React Hook Form with Zod validation.              |
+| **HTTP Client**          | `axios`                     | Promise-based HTTP client for API requests.                                |
+| **JWT Management**       | `@fastify/jwt`              | JWT integration for Fastify server.                                        |
+| **Utilities**            | `clsx`, `class-variance-authority` | Utility libraries for conditional class handling.                         |
+| **Date Management**      | `date-fns`                  | JavaScript library for date manipulation.                                  |
+| **Linting**              | `eslint`, `prettier`        | Linting and formatting tools for maintaining code quality.                 |
+| **Build Tools**          | `tsup`, `postcss`, `autoprefixer` | Tools for building and optimizing CSS and TypeScript files.               |
+| **QR Code Generation**   | `qrcode`                    | Library for generating QR codes.                                           |
+| **Drag-and-Drop**        | `@hello-pangea/dnd`         | Drag-and-drop interactions for React.                                      |
+| **Table Management**     | `@tanstack/react-table`     | Library for building flexible and powerful tables.                         |
 
   
 

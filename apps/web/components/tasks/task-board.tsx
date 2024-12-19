@@ -1,6 +1,5 @@
 "use client";
 
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Card } from "@/apps/web/components/ui/card";
 import { TaskStatus } from "@prisma/client";
 

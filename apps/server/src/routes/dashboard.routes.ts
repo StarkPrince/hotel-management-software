@@ -1,12 +1,15 @@
-import { FastifyInstance } from "fastify";
-import { dashboardService } from "../services/dashboardService";
+// dashboard.routes.ts
+import { FastifyPluginAsync } from "fastify";
+import DashboardController from "../controller/dashboard.controller";
 
-export async function dashboardRoutes(fastify: FastifyInstance) {
-  fastify.get("/api/dashboard/stats", async () => {
-    return await dashboardService.getStats();
+const dashboardRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
+  fastify.get("/api/dashboard/stats", {
+    handler: DashboardController.getStats,
   });
 
-  fastify.get("/api/dashboard/revenue-chart", async () => {
-    return await dashboardService.getRevenueChart();
+  fastify.get("/api/dashboard/revenue-chart", {
+    handler: DashboardController.getRevenueChart,
   });
-}
+};
+
+export default dashboardRoutes;

@@ -1,12 +1,15 @@
-import { FastifyInstance } from "fastify";
-import { staffService } from "../services/staffService";
+// staff.routes.ts
+import { FastifyPluginAsync } from "fastify";
+import StaffController from "../controller/staff.controller";
 
-export async function staffRoutes(fastify: FastifyInstance) {
-  fastify.get("/api/staff", async () => {
-    return await staffService.getAllStaff();
+const staffRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
+  fastify.get("/api/staff", {
+    handler: StaffController.getAllStaff,
   });
 
-  fastify.post("/api/staff/shifts", async (request: any) => {
-    return await staffService.createShift(request.body);
+  fastify.post("/api/staff/shifts", {
+    handler: StaffController.createShift,
   });
-}
+};
+
+export default staffRoutes;

@@ -1,12 +1,15 @@
-import { FastifyInstance } from "fastify";
-import { taskService } from "../services/taskService";
+// task.routes.ts
+import { FastifyPluginAsync } from "fastify";
+import TaskController from "../controller/task.controller";
 
-export async function taskRoutes(fastify: FastifyInstance) {
-  fastify.get("/api/tasks", async () => {
-    return await taskService.getAllTasks();
+const taskRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
+  fastify.get("/api/tasks", {
+    handler: TaskController.getAllTasks,
   });
 
-  fastify.post("/api/tasks", async (request: any) => {
-    return await taskService.createTask(request.body);
+  fastify.post("/api/tasks", {
+    handler: TaskController.createTask,
   });
-}
+};
+
+export default taskRoutes;

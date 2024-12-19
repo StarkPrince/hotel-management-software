@@ -1,12 +1,17 @@
-import { FastifyInstance } from "fastify";
-import { maintenanceService } from "../services/maintenanceService";
+// maintenance.routes.ts
+import { FastifyPluginAsync } from "fastify";
+import MaintenanceController from "../controller/maintenance.controller";
 
-export async function maintenanceRoutes(fastify: FastifyInstance) {
-  fastify.get("/api/maintenance", async () => {
-    return await maintenanceService.getAllLogs();
+const maintenanceRoutes: FastifyPluginAsync = async (
+  fastify
+): Promise<void> => {
+  fastify.get("/api/maintenance", {
+    handler: MaintenanceController.getAllLogs,
   });
 
-  fastify.post("/api/maintenance", async (request: any) => {
-    return await maintenanceService.createMaintenanceLog(request.body);
+  fastify.post("/api/maintenance", {
+    handler: MaintenanceController.createMaintenanceLog,
   });
-}
+};
+
+export default maintenanceRoutes;
