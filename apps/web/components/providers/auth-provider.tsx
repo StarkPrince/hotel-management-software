@@ -1,7 +1,9 @@
 "use client";
 
 import { User } from '@prisma/client';
+import axios from 'axios';
 import { createContext, useContext, useEffect, useState } from 'react';
+import { BASE_URL } from '../../config';
 
 interface AuthContextType
 {
@@ -9,6 +11,7 @@ interface AuthContextType
     login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
     loading: boolean;
+    register: (email: string, password: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -16,6 +19,7 @@ const AuthContext = createContext<AuthContextType>({
     login: async () => { },
     logout: async () => { },
     loading: true,
+    register: async () => { },
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode })
@@ -31,13 +35,15 @@ export function AuthProvider({ children }: { children: React.ReactNode })
     const checkAuth = async () =>
     {
         try {
-            const response = await fetch('/api/auth/check');
-            if (response.ok) {
-                const data = await response.json();
-                setUser(data.user);
+            const response = await axios.get(`${BASE_URL}/auth/login`, {
+                withCredentials: true, // Ensures cookies are sent with the request
+            });
+            if (response.data) {
+                setUser(response.data.user);
             }
         } catch (error) {
             console.error('Auth check failed:', error);
+            setUser(null);
         } finally {
             setLoading(false);
         }
@@ -45,28 +51,52 @@ export function AuthProvider({ children }: { children: React.ReactNode })
 
     const login = async (email: string, password: string) =>
     {
-        const response = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
-        });
-
-        if (!response.ok) {
-            throw new Error('Login failed');
+        try {
+            const response = await axios.post(
+                `${BASE_URL}/auth/login`,
+                { email, password },
+                { withCredentials: true } // Ensures cookies are handled
+            );
+            if (!response.data) {
+                throw new Error('Login failed');
+            }
+            setUser(response.data.user);
+        } catch (error) {
+            console.error('Login failed:', error);
+            throw error;
         }
-
-        const data = await response.json();
-        setUser(data.user);
     };
 
     const logout = async () =>
     {
-        await fetch('/api/auth/logout', { method: 'POST' });
-        setUser(null);
+        try {
+            await axios.post(`${BASE_URL}/auth/logout`, {}, { withCredentials: true });
+            setUser(null);
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
+    };
+
+    const register = async (email: string, password: string) =>
+    {
+        try {
+            const response = await axios.post(
+                `${BASE_URL}/auth/register`,
+                { email, password },
+                { withCredentials: true }
+            );
+            if (!response.data) {
+                throw new Error('Registration failed');
+            }
+            setUser(response.data.user);
+        } catch (error) {
+            console.error('Registration failed:', error);
+            throw error;
+        }
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, loading }}>
+        <AuthContext.Provider value={{ user, login, logout, register, loading }}>
             {children}
         </AuthContext.Provider>
     );

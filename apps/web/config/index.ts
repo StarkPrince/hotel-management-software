@@ -5,3 +5,5 @@ if (typeof window === "undefined") {
 
 export const BASE_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000/api";
+export const JWT_SECRET = process.env.JWT_SECRET || "secret";
+export const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET || "secret";

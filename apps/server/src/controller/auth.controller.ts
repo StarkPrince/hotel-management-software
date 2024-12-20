@@ -11,9 +11,7 @@ class AuthController {
   };
 
   login = async (request: FastifyRequest, reply: FastifyReply) => {
-    reply.status(201).send({
-      message: "User logged in successfully",
-    });
+    reply.status(201).send(await authService.login(request.body));
   };
 
   createStaff = async (request: any, reply: FastifyReply) => {

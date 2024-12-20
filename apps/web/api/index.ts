@@ -2,6 +2,14 @@ import { Room } from "@/apps/web/types";
 import axios from "axios";
 import { BASE_URL } from "../config";
 
+export async function login(email: string, password: string) {
+  const response = await axios.post(`${BASE_URL}/auth/login`, {
+    email,
+    password,
+  });
+  return response.data;
+}
+
 export async function fetchDashboardStats() {
   const response = await axios.get(`${BASE_URL}/dashboard/stats`);
   return response.data;
