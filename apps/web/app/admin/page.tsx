@@ -1,7 +1,7 @@
 "use client"
 
 import { fetchDashboardStats } from "@/apps/web/api"
-import { DashboardChart } from "@/apps/web/components/dashboard/chart"
+import { DashboardChart } from "@/apps/web/components/admin/dashboard/chart"
 import { Card, CardContent, CardHeader, CardTitle } from "@/apps/web/components/ui/card"
 import { BedDouble, CalendarCheck, Percent, TrendingUp } from 'lucide-react'
 import { useEffect, useState } from "react"

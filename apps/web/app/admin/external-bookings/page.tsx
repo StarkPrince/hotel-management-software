@@ -1,7 +1,7 @@
 "use client"
 
 import { fetchExternalBookings } from "@/apps/web/api"
-import { externalBookingColumns } from "@/apps/web/components/bookings/external-columns"
+import { externalBookingColumns } from "@/apps/web/components/admin/bookings/external-columns"
 import { Card, CardContent, CardHeader, CardTitle } from "@/apps/web/components/ui/card"
 import { DataTable } from "@/apps/web/components/ui/data-table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/apps/web/components/ui/tabs"

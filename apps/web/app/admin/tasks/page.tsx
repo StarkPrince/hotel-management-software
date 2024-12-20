@@ -1,8 +1,8 @@
 "use client"
 
 import { createTask, fetchTasks, updateTaskStatus } from "@/apps/web/api"
-import { AddTaskDialog } from "@/apps/web/components/tasks/add-task-dialog"
-import { taskColumns } from "@/apps/web/components/tasks/columns"
+import { AddTaskDialog } from "@/apps/web/components/admin/tasks/add-task-dialog"
+import { taskColumns } from "@/apps/web/components/admin/tasks/columns"
 import { Button } from "@/apps/web/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/apps/web/components/ui/card"
 import { DataTable } from "@/apps/web/components/ui/data-table"

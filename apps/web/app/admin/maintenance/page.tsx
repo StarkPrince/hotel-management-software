@@ -1,8 +1,8 @@
 "use client"
 
 import { createMaintenance, fetchMaintenance, updateMaintenanceStatus } from "@/apps/web/api"
-import { AddMaintenanceDialog } from "@/apps/web/components/maintenance/add-maintenance-dialog"
-import { maintenanceColumns } from "@/apps/web/components/maintenance/columns"
+import { AddMaintenanceDialog } from "@/apps/web/components/admin/maintenance/add-maintenance-dialog"
+import { maintenanceColumns } from "@/apps/web/components/admin/maintenance/columns"
 import { Button } from "@/apps/web/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/apps/web/components/ui/card"
 import { DataTable } from "@/apps/web/components/ui/data-table"

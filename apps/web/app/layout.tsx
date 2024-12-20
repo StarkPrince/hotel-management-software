@@ -1,37 +1,46 @@
-import { ThemeProvider } from "@/apps/web/components/theme-provider"
-import type { Metadata } from "next"
-import { Inter } from 'next/font/google'
-import { RecoilRoot } from "recoil"
-import "./globals.css"
+"use client"; // Keep the RootLayout a client component
 
-const inter = Inter({ subsets: ["latin"] })
+import { AuthProvider } from '@/apps/web/components/providers/auth-provider';
+import { ThemeProvider } from "@/apps/web/components/theme-provider";
+import { Toaster } from '@/apps/web/components/ui/sonner';
+import { Inter } from "next/font/google";
+import Head from "next/head";
+import { RecoilRoot } from "recoil";
+import "./globals.css";
 
-export const metadata: Metadata = {
-    title: "Welcome to Hotel Management System",
-    description: "Modern booking management software",
-}
+
+const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
     children,
 }: {
-    children: React.ReactNode
+    children: React.ReactNode;
 })
 {
     return (
         <html lang="en" suppressHydrationWarning>
+            <Head>
+                <title>LuxStay - Luxury Hotel Management</title>
+                <meta
+                    name="description"
+                    content="Experience luxury at its finest"
+                />
+            </Head>
             <body className={inter.className}>
-                <RecoilRoot>
-                    <ThemeProvider
-                        attribute="class"
-                        defaultTheme="system"
-                        enableSystem
-                        disableTransitionOnChange
-                    >
-                        {children}
-                    </ThemeProvider>
-                </RecoilRoot>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    <RecoilRoot>
+                        <AuthProvider>
+                            {children}
+                            <Toaster />
+                        </AuthProvider>
+                    </RecoilRoot>
+                </ThemeProvider>
             </body>
         </html>
-    )
+    );
 }
-

@@ -1,9 +1,9 @@
 "use client"
 
 import { createRoom, fetchRooms, updateRoom } from "@/apps/web/api"
-import { AddRoomDialog } from "@/apps/web/components/rooms/add-room-dialog"
-import { roomColumns } from "@/apps/web/components/rooms/columns"
-import { EditRoomDialog } from "@/apps/web/components/rooms/edit-room-dialog"
+import { AddRoomDialog } from "@/apps/web/components/admin/rooms/add-room-dialog"
+import { roomColumns } from "@/apps/web/components/admin/rooms/columns"
+import { EditRoomDialog } from "@/apps/web/components/admin/rooms/edit-room-dialog"
 import { Badge } from "@/apps/web/components/ui/badge"
 import { Button } from "@/apps/web/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/apps/web/components/ui/card"

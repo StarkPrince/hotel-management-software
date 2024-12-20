@@ -1,8 +1,8 @@
 "use client"
 
 import { createBooking, fetchBookings } from "@/apps/web/api"
-import { AddBookingDialog } from "@/apps/web/components/bookings/add-booking-dialog"
-import { bookingColumns } from "@/apps/web/components/bookings/columns"
+import { AddBookingDialog } from "@/apps/web/components/admin/bookings/add-booking-dialog"
+import { bookingColumns } from "@/apps/web/components/admin/bookings/columns"
 import { Button } from "@/apps/web/components/ui/button"
 import { Card } from "@/apps/web/components/ui/card"
 import { DataTable } from "@/apps/web/components/ui/data-table"
