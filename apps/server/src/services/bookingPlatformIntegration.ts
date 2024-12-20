@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BookingSource } from "../enum";
+import { BookingSource } from "../schemas/enum";
 
 const PLATFORM_APIS: any = {
   [BookingSource.BOOKING_COM]: {
@@ -17,10 +17,10 @@ const PLATFORM_APIS: any = {
 };
 
 export const bookingPlatformIntegration = {
-  async getExternalBookings(platform: BookingSource) {
-    const platformConfig = PLATFORM_APIS[platform];
+  async getExternalBookings(data: any) {
+    const platformConfig = PLATFORM_APIS[data.platform];
     if (!platformConfig) {
-      throw new Error(`Unsupported platform: ${platform}`);
+      throw new Error(`Unsupported platform: ${data.platform}`);
     }
 
     try {
@@ -31,7 +31,7 @@ export const bookingPlatformIntegration = {
       });
       return response.data;
     } catch (error) {
-      console.error(`Error fetching bookings from ${platform}:`, error);
+      console.error(`Error fetching bookings from ${data.platform}:`, error);
       throw error;
     }
   },

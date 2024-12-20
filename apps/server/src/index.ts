@@ -1,6 +1,7 @@
 import cors from "@fastify/cors";
 import dotenv from "dotenv";
 import Fastify from "fastify";
+import authRoutes from "./routes/auth.routes";
 import bookingRoutes from "./routes/booking.routes";
 import dashboardRoutes from "./routes/dashboard.routes";
 import healthRoutes from "./routes/health.routes";
@@ -19,6 +20,7 @@ const fastify = Fastify({
 
 fastify.register(cors, { origin: "*" });
 
+fastify.register(authRoutes);
 fastify.register(healthRoutes);
 fastify.register(dashboardRoutes);
 fastify.register(roomRoutes);

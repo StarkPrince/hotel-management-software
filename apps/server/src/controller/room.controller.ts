@@ -1,12 +1,11 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { validateRequest } from "../middleware/validateRequest";
 import { RoomZodSchema } from "../schemas";
-import { roomService } from "../services/roomService";
+import { roomService } from "../services/room.service";
 
 class RoomController {
   getAllRooms = async (request: any) => {
     const user = request.user as any;
-    console.log("user", user);
     return await roomService.getAllRooms();
   };
 
@@ -19,7 +18,9 @@ class RoomController {
     reply.status(201).send(await roomService.createRoom(request.body));
   };
 
-  updateRoom = async (request: any) => {
+  updateRoom = async (request: FastifyRequest, reply: FastifyReply) => {
+    validateRequest(RoomZodSchema)(request, reply);
+    // @ts-ignore
     return await roomService.updateRoom(request.params.id, request.body);
   };
 }

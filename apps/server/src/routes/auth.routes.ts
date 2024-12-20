@@ -1,21 +1,20 @@
 // auth.routes.ts
 import { FastifyPluginAsync } from "fastify";
 import AuthController from "../controller/auth.controller";
-import { LoginSchema, RegisterSchema } from "../schemas";
 
 const authRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
-  fastify.post("/login", {
-    schema: {
-      body: LoginSchema,
-    },
+  // TODO: This route is not working
+  fastify.post("/api/register", {
+    handler: AuthController.register,
+  });
+
+  // TODO: This route is not working
+  fastify.post("/api/login", {
     handler: AuthController.login,
   });
 
-  fastify.post("/register", {
-    schema: {
-      body: RegisterSchema,
-    },
-    handler: AuthController.register,
+  fastify.post("/api/staffs", {
+    handler: AuthController.createStaff,
   });
 };
 

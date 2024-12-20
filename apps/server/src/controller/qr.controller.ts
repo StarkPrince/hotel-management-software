@@ -1,5 +1,5 @@
 // booking.controller.ts
-import qrServices from "../services/qr.services";
+import qrServices from "../services/qr.service";
 
 class QRController {
   generateAndUpdateQRCode = async (request: any) => {

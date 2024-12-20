@@ -11,18 +11,25 @@ const bookingRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
     handler: BookingController.createBooking,
   });
 
+  fastify.get("/api/bookings/:id", {
+    handler: BookingController.getBookingById,
+  });
+
+  // TODO: This route is not working
   fastify.post("/verify-qr", {
     handler: BookingController.verifyQRCode,
   });
 
-  fastify.put("/api/bookings/:id/status", {
-    handler: BookingController.updateBookingStatus,
+  fastify.put("/api/bookings/:id", {
+    handler: BookingController.updateBooking,
   });
 
+  // TODO: This route is not working
   fastify.get("/api/external-bookings/sync", {
     handler: BookingController.syncAllPlatforms,
   });
 
+  // TODO: This route is not working
   fastify.get("/api/external-bookings/:platform", {
     handler: BookingController.getExternalBookings,
   });

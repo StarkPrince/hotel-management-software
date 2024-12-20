@@ -1,57 +1,24 @@
-// auth.controller.ts
+// booking.controller.ts
 import { FastifyReply, FastifyRequest } from "fastify";
-import prisma from "../prisma";
-import { comparePassword, hashPassword } from "../utils/auth";
+import { validateRequest } from "../middleware/validateRequest";
+import { UserZodSchema } from "../schemas";
+import { authService } from "../services/auth.service";
 
 class AuthController {
-  login = async (request: FastifyRequest, reply: FastifyReply) => {
-    const { email, password } = request.body as any;
-
-    const user = await prisma.user.findUnique({
-      where: { email },
-    });
-
-    if (!user || !(await comparePassword(password, user.password))) {
-      throw new Error("Invalid credentials");
-    }
-
-    const token = await reply.jwtSign({
-      id: user.id,
-      email: user.email,
-      role: user.role,
-    });
-
-    return { token };
+  register = async (request: any, reply: FastifyReply) => {
+    validateRequest(UserZodSchema)(request, reply);
+    reply.status(201).send(await authService.register(request.body));
   };
 
-  register = async (request: FastifyRequest, reply: FastifyReply) => {
-    const { email, password, name } = request.body as any;
-
-    const exists = await prisma.user.findUnique({
-      where: { email },
+  login = async (request: FastifyRequest, reply: FastifyReply) => {
+    reply.status(201).send({
+      message: "User logged in successfully",
     });
+  };
 
-    if (exists) {
-      throw new Error("User already exists");
-    }
-
-    const hashedPassword = await hashPassword(password);
-
-    const user = await prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        name,
-      },
-    });
-
-    const token = await reply.jwtSign({
-      id: user.id,
-      email: user.email,
-      role: user.role,
-    });
-
-    return { token };
+  createStaff = async (request: any, reply: FastifyReply) => {
+    validateRequest(UserZodSchema)(request, reply);
+    reply.status(201).send(await authService.createStaff(request.body));
   };
 }
 

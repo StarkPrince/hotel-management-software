@@ -11,13 +11,13 @@ model User {
   id               String             @id @default(cuid())
   name             String?
   email            String?            @unique
-  password         String
-  role             UserRole           @default(GUEST)
+  password         String             @default(uuid())
+  role             UserRole?          @default(GUEST)
   department       Department?        @relation(fields: [departmentId], references: [id])
   departmentId     String?
   tasks            Task[]
   shifts           StaffShift[]
-  sessions         Session[] // New relation for managing user sessions
+  sessions         Session[]
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
   CleaningSchedule CleaningSchedule[]
@@ -78,7 +78,7 @@ model MaintenanceLog {
   roomId     String
   issue      String
   priority   Priority   @default(MEDIUM)
-  status     TaskStatus
+  status     TaskStatus @default(PENDING)
   assignedTo String?
   resolvedAt DateTime?
   createdAt  DateTime   @default(now())
@@ -100,8 +100,8 @@ model Task {
 
 model StaffShift {
   id        String      @id @default(cuid())
-  staff     User        @relation(fields: [staffId], references: [id])
-  staffId   String
+  user      User        @relation(fields: [userId], references: [id])
+  userId    String
   startTime DateTime
   endTime   DateTime
   status    ShiftStatus @default(SCHEDULED)
@@ -126,8 +126,6 @@ model Booking {
   id                String           @id @default(cuid())
   room              Room             @relation(fields: [roomId], references: [id])
   roomId            String
-  guestName         String
-  guestEmail        String
   checkIn           DateTime
   checkOut          DateTime
   source            BookingSource
@@ -143,57 +141,6 @@ model Booking {
   user              User             @relation(fields: [userId], references: [id])
   userId            String
   qrCode            String? // Generated QR code for access
-}
-
-enum RoomType {
-  STANDARD
-  DELUXE
-  SUITE
-  PRESIDENTIAL
-}
-
-enum RoomStatus {
-  AVAILABLE
-  OCCUPIED
-  MAINTENANCE
-  CLEANING
-}
-
-enum BookingSource {
-  DIRECT
-  BOOKING_COM
-  MAKEMYTRIP
-  GOIBIBO
-  EXPEDIA
-  OTHERS
-}
-
-enum TaskStatus {
-  PENDING
-  IN_PROGRESS
-  COMPLETED
-  CANCELLED
-}
-
-enum Priority {
-  LOW
-  MEDIUM
-  HIGH
-  URGENT
-}
-
-enum PaymentStatus {
-  PENDING
-  PARTIAL
-  COMPLETED
-  REFUNDED
-}
-
-enum ShiftStatus {
-  SCHEDULED
-  IN_PROGRESS
-  COMPLETED
-  CANCELLED
 }
 
 model Session {
@@ -260,17 +207,6 @@ enum BookingStatus {
   CANCELLED
 }
 
-enum AmenityType {
-  POOL
-  GYM
-  SPA
-  RESTAURANT
-  PARKING
-  WIFI
-  ROOM_SERVICE
-  LAUNDRY
-}
-
 model Log {
   id        String   @id @default(cuid())
   userId    String?
@@ -290,4 +226,66 @@ enum LogLevel {
   INFO
   WARN
   ERROR
+}
+
+enum AmenityType {
+  POOL
+  GYM
+  SPA
+  RESTAURANT
+  PARKING
+  WIFI
+  ROOM_SERVICE
+  LAUNDRY
+}
+
+enum RoomType {
+  STANDARD
+  DELUXE
+  SUITE
+  PRESIDENTIAL
+}
+
+enum RoomStatus {
+  AVAILABLE
+  OCCUPIED
+  MAINTENANCE
+  CLEANING
+}
+
+enum BookingSource {
+  DIRECT
+  BOOKING_COM
+  MAKEMYTRIP
+  GOIBIBO
+  EXPEDIA
+  OTHERS
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum PaymentStatus {
+  PENDING
+  PARTIAL
+  COMPLETED
+  REFUNDED
+}
+
+enum ShiftStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
 }

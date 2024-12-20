@@ -1,5 +1,5 @@
-import { RoomStatus, RoomType } from "../enum";
 import prisma from "../prisma";
+import { RoomStatus, RoomType } from "../schemas/enum";
 
 export const roomService = {
   async getAllRooms() {

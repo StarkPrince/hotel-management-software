@@ -1,14 +1,17 @@
 // task.controller.ts
-import { taskService } from "../services/taskService";
+import { FastifyReply } from "fastify";
+import { validateRequest } from "../middleware/validateRequest";
+import { TaskZodSchema } from "../schemas";
+import { taskService } from "../services/task.service";
 
 class TaskController {
   getAllTasks = async (request: any) => {
     return await taskService.getAllTasks();
   };
 
-  createTask = async (request: any) => {
-    const { title, description, dueDate } = request.body;
-    return await taskService.createTask({ title, description, dueDate });
+  createTask = async (request: any, reply: FastifyReply) => {
+    validateRequest(TaskZodSchema)(request, reply);
+    reply.status(201).send(await taskService.createTask(request.body));
   };
 }
 

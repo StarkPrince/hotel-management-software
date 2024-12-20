@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import winston from "winston";
-import { LogLevel } from "../enum";
 import prisma from "../prisma";
+import { LogLevel } from "../schemas/enum";
 
 const maskSensitiveData = (data: string | undefined): string | null => {
   return data ? crypto.createHash("sha256").update(data).digest("hex") : null;

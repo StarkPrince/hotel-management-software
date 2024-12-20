@@ -1,12 +1,9 @@
-import { Priority, TaskStatus } from "../enum";
 import prisma from "../prisma";
+import { Priority, TaskStatus } from "../schemas/enum";
 
 export const taskService = {
   async getAllTasks() {
     return await prisma.task.findMany({
-      include: {
-        assignedTo: true,
-      },
       orderBy: [
         {
           priority: "desc",
@@ -23,7 +20,7 @@ export const taskService = {
       data: {
         title: data.title,
         description: data.description,
-        userId: data.assignedToId,
+        userId: data.userId,
         dueDate: new Date(data.dueDate),
         priority: data.priority as Priority,
         status: TaskStatus.PENDING,

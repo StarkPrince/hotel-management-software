@@ -1,5 +1,3 @@
-export * from "./auth.schema";
-
 import { z } from "zod";
 import {
   AmenityType,
@@ -12,22 +10,28 @@ import {
   ShiftStatus,
   TaskStatus,
   UserRole,
-} from "../enum";
+} from "./enum";
 
 // Schemas
-const UserZodSchema = z.object({
+export const UserZodSchema = z.object({
+  name: z.string(),
+  email: z.string(),
+  password: z.string().optional(),
+  departmentId: z.string().nullable().optional(),
+  role: z.nativeEnum(UserRole).default(UserRole.GUEST),
+});
+
+export const UserUpdateZodSchema = z.object({
   name: z.string().nullable().optional(),
   email: z.string().nullable().optional(),
-  password: z.string(),
-  role: z.nativeEnum(UserRole),
   departmentId: z.string().nullable().optional(),
 });
 
-const DepartmentZodSchema = z.object({
+export const DepartmentZodSchema = z.object({
   name: z.string(),
 });
 
-const RoomZodSchema = z.object({
+export const RoomZodSchema = z.object({
   number: z.string(),
   type: z.nativeEnum(RoomType),
   status: z.nativeEnum(RoomStatus).default(RoomStatus.AVAILABLE),
@@ -35,14 +39,14 @@ const RoomZodSchema = z.object({
   price: z.number(),
 });
 
-const PlatformBookingZodSchema = z.object({
+export const PlatformBookingZodSchema = z.object({
   bookingId: z.string(),
   platform: z.nativeEnum(BookingSource),
   platformId: z.string(),
   metadata: z.any(),
 });
 
-const CleaningScheduleZodSchema = z.object({
+export const CleaningScheduleZodSchema = z.object({
   roomId: z.string(),
   staffId: z.string(),
   date: z.date(),
@@ -50,32 +54,44 @@ const CleaningScheduleZodSchema = z.object({
   notes: z.string().nullable().optional(),
 });
 
-const MaintenanceLogZodSchema = z.object({
+export const MaintenanceLogZodSchema = z.object({
   roomId: z.string(),
   issue: z.string(),
   priority: z.nativeEnum(Priority).default(Priority.MEDIUM),
   status: z.nativeEnum(TaskStatus).default(TaskStatus.PENDING),
   assignedTo: z.string().nullable().optional(),
-  resolvedAt: z.date().nullable().optional(),
 });
 
-const TaskZodSchema = z.object({
+export const MaintenanceLogUpdateZodSchema = z.object({
+  issue: z.string().nullable().optional(),
+  priority: z.nativeEnum(Priority).nullable().optional(),
+  status: z.nativeEnum(TaskStatus).nullable().optional(),
+  assignedTo: z.string().nullable().optional(),
+});
+
+export const TaskZodSchema = z.object({
   title: z.string(),
   description: z.string().nullable().optional(),
   userId: z.string(),
-  dueDate: z.date(),
+  dueDate: z.string(),
   priority: z.nativeEnum(Priority).default(Priority.MEDIUM),
   status: z.nativeEnum(TaskStatus).default(TaskStatus.PENDING),
 });
 
-const StaffShiftZodSchema = z.object({
-  staffId: z.string(),
+export const StaffShiftZodSchema = z.object({
+  userId: z.string(),
   startTime: z.date(),
   endTime: z.date(),
   status: z.nativeEnum(ShiftStatus).default(ShiftStatus.SCHEDULED),
 });
 
-const AmenityZodSchema = z.object({
+export const StaffShiftUpdateZodSchema = z.object({
+  startTime: z.date().nullable().optional(),
+  endTime: z.date().nullable().optional(),
+  status: z.nativeEnum(ShiftStatus).nullable().optional(),
+});
+
+export const AmenityZodSchema = z.object({
   name: z.string(),
   description: z.string().nullable().optional(),
   category: z.nativeEnum(AmenityType),
@@ -83,23 +99,37 @@ const AmenityZodSchema = z.object({
   maxUsage: z.number().nullable().optional(),
 });
 
-const BookingZodSchema = z.object({
+export const BookingZodSchema = z.object({
+  name: z.string(),
+  email: z.string(),
   roomId: z.string(),
-  guestName: z.string(),
-  guestEmail: z.string(),
-  checkIn: z.date(),
-  checkOut: z.date(),
+  checkIn: z.string(),
+  checkOut: z.string(),
   source: z.nativeEnum(BookingSource),
   status: z.nativeEnum(BookingStatus).default(BookingStatus.PENDING),
   totalAmount: z.number(),
   paymentStatus: z.nativeEnum(PaymentStatus).default(PaymentStatus.PENDING),
   externalBookingId: z.string().nullable().optional(),
   specialRequests: z.string().nullable().optional(),
-  userId: z.string(),
   qrCode: z.string().nullable().optional(),
 });
 
-const SessionZodSchema = z.object({
+export const BookingUpdateZodSchema = z.object({
+  name: z.string().nullable().optional(),
+  email: z.string().nullable().optional(),
+  roomId: z.string().nullable().optional(),
+  checkIn: z.string().nullable().optional(),
+  checkOut: z.string().nullable().optional(),
+  source: z.nativeEnum(BookingSource).nullable().optional(),
+  status: z.nativeEnum(BookingStatus).nullable().optional(),
+  totalAmount: z.number().nullable().optional(),
+  paymentStatus: z.nativeEnum(PaymentStatus).nullable().optional(),
+  externalBookingId: z.string().nullable().optional(),
+  specialRequests: z.string().nullable().optional(),
+  qrCode: z.string().nullable().optional(),
+});
+
+export const SessionZodSchema = z.object({
   userId: z.string(),
   bookingId: z.string(),
   jwt: z.string(),
@@ -109,47 +139,40 @@ const SessionZodSchema = z.object({
   token: z.string(),
 });
 
-const ProfileZodSchema = z.object({
+export const ProfileZodSchema = z.object({
   userId: z.string(),
   phone: z.string().nullable().optional(),
   address: z.string().nullable().optional(),
   preferences: z.any().nullable().optional(),
 });
 
-const RoomAmenityZodSchema = z.object({
+export const RoomAmenityZodSchema = z.object({
   roomId: z.string(),
   amenityId: z.string(),
 });
 
-const AmenityUsageZodSchema = z.object({
+export const AmenityUsageZodSchema = z.object({
   sessionId: z.string(),
   amenityId: z.string(),
   usedAt: z.date().default(() => new Date()),
 });
 
-export {
-  AmenityType,
-  AmenityUsageZodSchema,
-  AmenityZodSchema,
-  BookingSource,
-  BookingStatus,
-  BookingZodSchema,
-  CleaningScheduleZodSchema,
-  DepartmentZodSchema,
-  MaintenanceLogZodSchema,
-  PaymentStatus,
-  PlatformBookingZodSchema,
-  Priority,
-  ProfileZodSchema,
-  RoomAmenityZodSchema,
-  RoomStatus,
-  RoomType,
-  RoomZodSchema,
-  SessionZodSchema,
-  ShiftStatus,
-  StaffShiftZodSchema,
-  TaskStatus,
-  TaskZodSchema,
-  UserRole,
-  UserZodSchema,
-};
+export type UserDTO = z.infer<typeof UserZodSchema>;
+export type DepartmentDTO = z.infer<typeof DepartmentZodSchema>;
+export type RoomDTO = z.infer<typeof RoomZodSchema>;
+export type PlatformBookingDTO = z.infer<typeof PlatformBookingZodSchema>;
+export type CleaningScheduleDTO = z.infer<typeof CleaningScheduleZodSchema>;
+export type MaintenanceLogDTO = z.infer<typeof MaintenanceLogZodSchema>;
+export type TaskDTO = z.infer<typeof TaskZodSchema>;
+export type StaffShiftDTO = z.infer<typeof StaffShiftZodSchema>;
+export type AmenityDTO = z.infer<typeof AmenityZodSchema>;
+export type BookingDTO = z.infer<typeof BookingZodSchema>;
+export type SessionDTO = z.infer<typeof SessionZodSchema>;
+export type ProfileDTO = z.infer<typeof ProfileZodSchema>;
+export type RoomAmenityDTO = z.infer<typeof RoomAmenityZodSchema>;
+export type AmenityUsageDTO = z.infer<typeof AmenityUsageZodSchema>;
+export type BookingUpdateDTO = z.infer<typeof BookingUpdateZodSchema>;
+export type MaintenanceLogUpdateDTO = z.infer<
+  typeof MaintenanceLogUpdateZodSchema
+>;
+export type StaffShiftUpdateDTO = z.infer<typeof StaffShiftUpdateZodSchema>;

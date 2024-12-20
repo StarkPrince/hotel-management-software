@@ -9,8 +9,16 @@ const maintenanceRoutes: FastifyPluginAsync = async (
     handler: MaintenanceController.getAllLogs,
   });
 
+  fastify.get("/api/maintenance/:id", {
+    handler: MaintenanceController.getMaintenanceLogById,
+  });
+
   fastify.post("/api/maintenance", {
     handler: MaintenanceController.createMaintenanceLog,
+  });
+
+  fastify.put("/api/maintenance/:id", {
+    handler: MaintenanceController.updateMaintenanceLog,
   });
 };
 

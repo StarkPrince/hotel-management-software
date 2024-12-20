@@ -1,5 +1,5 @@
 // dashboard.controller.ts
-import { dashboardService } from "../services/dashboardService";
+import { dashboardService } from "../services/dashboard.service";
 
 class DashboardController {
   getStats = async (request: any) => {

@@ -1,11 +1,11 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { ZodError, ZodType } from "zod";
+import { z, ZodError, ZodType } from "zod";
 
 // Fastify validation middleware
 export const validateRequest = (schema: ZodType<any>) => {
   return async (request: FastifyRequest, reply: FastifyReply) => {
     try {
-      request.body = schema.parse(request.body);
+      request.body = schema.parse(request.body) as z.infer<typeof schema>;
     } catch (err: any) {
       if (err instanceof ZodError) {
         reply.status(400).send({
