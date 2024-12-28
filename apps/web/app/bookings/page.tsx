@@ -21,21 +21,22 @@ export default function BookingsPage()
   }, [user, router]);
 
   if (!user) return null;
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (isLoading) return <div className="text-center py-4 text-sm">Loading...</div>;
+  if (error) return <div className="text-center py-4 text-sm text-red-500">Error: {error}</div>;
 
   return (
-    <div className="container py-10">
-      <h1 className="text-4xl font-bold mb-8">My Bookings</h1>
+    <div className="container pl-6 pt-10">
+      <h1 className="text-xl font-semibold mb-4">My Bookings</h1>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Booking History</CardTitle>
+        <CardHeader className="py-2">
+          <CardTitle className="text-sm font-medium">Booking History</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-2">
           <BookingTable bookings={bookings} />
         </CardContent>
       </Card>
     </div>
   );
 }
+

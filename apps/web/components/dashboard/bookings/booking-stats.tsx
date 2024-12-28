@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/apps/web/components/ui/card";
 import mockDb from "@/apps/web/data/mock-db.json";
-import { BedDouble, CalendarCheck, CreditCard, Users } from "lucide-react";
+import { BedDouble, CalendarCheck, CreditCard, Users } from 'lucide-react';
 
 export function BookingStats()
 {
@@ -45,7 +45,7 @@ export function BookingStats()
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stat.value}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground mt-1">
               {stat.description}
             </p>
           </CardContent>
@@ -54,3 +54,4 @@ export function BookingStats()
     </div>
   );
 }
+

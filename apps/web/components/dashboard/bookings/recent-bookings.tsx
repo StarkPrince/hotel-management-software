@@ -14,13 +14,13 @@ export function RecentBookings()
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Recent Bookings</CardTitle>
+        <CardTitle className="text-sm font-medium">Recent Bookings</CardTitle>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[400px]">
+        <ScrollArea className="h-[300px]">
           {recentBookings.map((booking) =>
           {
-            const guest = mockDb.users.find(u => u.id === booking.userId);
+            const guest = mockDb.users.find(u => u.email === booking.guestEmail);
             const room = mockDb.rooms.find(r => r.id === booking.roomId);
             return (
               <div
@@ -32,13 +32,16 @@ export function RecentBookings()
                   <p className="text-sm font-medium leading-none">
                     {guest?.name}
                   </p>
-                  <p className="text-sm text-muted-foreground">
-                    Room {room?.number} • ${booking.totalPrice}
+                  <p className="text-xs text-muted-foreground">
+                    Room {room?.number} • ${booking.totalAmount.toFixed(2)}
                   </p>
                   <div className="flex items-center pt-2">
-                    <Badge variant="outline" className="text-xs">
+                    <Badge variant="secondary" className="text-xs">
                       {booking.status}
                     </Badge>
+                    <span className="text-xs text-muted-foreground ml-2">
+                      {new Date(booking.checkIn).toLocaleDateString()}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -49,3 +52,4 @@ export function RecentBookings()
     </Card>
   );
 }
+

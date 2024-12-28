@@ -1,55 +1,59 @@
-"use client";
+'use client'
 
-import { Badge } from "@/apps/web/components/ui/badge";
-import { Button } from "@/apps/web/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/apps/web/components/ui/card";
-import { Room } from "@/apps/web/types";
-import Image from "next/image";
-import Link from "next/link";
+import { Room, RoomStatus } from "@/apps/web/types"
+import { motion } from "framer-motion"
+import { Star, Tv, Wifi, Wine } from 'lucide-react'
 
 interface RoomCardProps
 {
-  room: Room;
+  room: Room
 }
 
 export function RoomCard({ room }: RoomCardProps)
 {
   return (
-    <Card className="overflow-hidden transition-all hover:shadow-lg">
-      <div className="relative h-48 w-full">
-        <Image
-          src={room.imageUrl}
-          alt={`Room ${room.number}`}
-          fill
-          className="object-cover"
-        />
+    <motion.div
+      className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out"
+      whileHover={{ y: -5 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="relative">
+        <img src={room.imageUrl} alt={`Room ${room.number}`} className="w-full h-64 object-cover" />
+        <div className="absolute top-4 right-4 bg-white px-2 py-1 rounded-full text-sm font-semibold text-gray-700">
+          {room.type}
+        </div>
       </div>
-      <CardHeader>
-        <div className="flex justify-between items-center">
-          <CardTitle>Room {room.number}</CardTitle>
-          <Badge variant={room.status === "AVAILABLE" ? "default" : "secondary"}>
-            {room.status}
-          </Badge>
+      <div className="p-6">
+        <h3 className="text-2xl font-bold text-gray-800 mb-2">Room {room.number}</h3>
+        <p className="text-gray-600 mb-4">{room.floor}th Floor</p>
+        <div className="flex items-center mb-4">
+          <Star className="text-yellow-400 mr-1" size={20} />
+          <Star className="text-yellow-400 mr-1" size={20} />
+          <Star className="text-yellow-400 mr-1" size={20} />
+          <Star className="text-yellow-400 mr-1" size={20} />
+          <Star className="text-gray-300" size={20} />
         </div>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-2">
-          <p className="text-2xl font-bold">${room.price}/night</p>
-          <p className="text-muted-foreground">{room.type}</p>
-          <div className="flex flex-wrap gap-2">
-            {room.amenities.map((amenity) => (
-              <Badge key={amenity} variant="outline">
-                {amenity}
-              </Badge>
-            ))}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-2">
+            {room.amenities.includes("WiFi") && <Wifi size={20} className="text-blue-500" />}
+            {room.amenities.includes("TV") && <Tv size={20} className="text-green-500" />}
+            {room.amenities.includes("Mini Bar") && <Wine size={20} className="text-red-500" />}
           </div>
+          <p className="text-3xl font-bold text-gray-800">${room.price}</p>
         </div>
-      </CardContent>
-      <CardFooter>
-        <Link href={`/rooms/${room.id}`} className="w-full">
-          <Button className="w-full">View Details</Button>
-        </Link>
-      </CardFooter>
-    </Card>
-  );
+        <button
+          className={`w-full py-2 px-4 rounded-full font-semibold text-white transition-colors duration-300 ${room.status === RoomStatus.AVAILABLE
+              ? "bg-blue-600 hover:bg-blue-700"
+              : "bg-gray-400 cursor-not-allowed"
+            }`}
+          disabled={room.status !== RoomStatus.AVAILABLE}
+        >
+          {room.status === RoomStatus.AVAILABLE ? "Book Now" : "Not Available"}
+        </button>
+      </div>
+    </motion.div>
+  )
 }
+

@@ -18,15 +18,15 @@ export function OccupancyChart()
   return (
     <Card className="col-span-4">
       <CardHeader>
-        <CardTitle>Weekly Occupancy Rate (%)</CardTitle>
+        <CardTitle className="text-sm font-medium">Weekly Occupancy Rate (%)</CardTitle>
       </CardHeader>
-      <CardContent className="h-[300px]">
+      <CardContent className="h-[250px]">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data}>
+          <BarChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="day" />
-            <YAxis />
-            <Tooltip />
+            <XAxis dataKey="day" tick={{ fontSize: 12 }} />
+            <YAxis tick={{ fontSize: 12 }} />
+            <Tooltip contentStyle={{ fontSize: 12 }} />
             <Bar dataKey="occupancy" fill="hsl(var(--primary))" />
           </BarChart>
         </ResponsiveContainer>
@@ -34,3 +34,4 @@ export function OccupancyChart()
     </Card>
   );
 }
+

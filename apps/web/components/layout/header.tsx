@@ -10,7 +10,7 @@ import
   DropdownMenuTrigger,
 } from "@/apps/web/components/ui/dropdown-menu";
 import { useAuth } from "@/apps/web/hooks/use-auth";
-import { Hotel, Menu, UserCircle, X } from "lucide-react";
+import { Hotel, Menu, User, X } from 'lucide-react';
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -25,8 +25,9 @@ export default function Header()
     { name: "Home", href: "/" },
     { name: "Rooms", href: "/rooms" },
     { name: "Amenities", href: "/amenities" },
-    ...(user ? [{ name: "My Bookings", href: "/bookings" }] : []),
-    ...(user?.role === "ADMIN" ? [{ name: "Dashboard", href: "/dashboard" }] : []),
+    ...(user && user.role === "GUEST" ? [{ name: "My Bookings", href: "/bookings" }] : []),
+    ...(user && user.role === "ADMIN" ? [{ name: "Dashboard", href: "/dashboard" }] : []),
+    ...(user && user.role === "STAFF" ? [{ name: "Staff Portal", href: "/staff-portal" }] : []),
   ];
 
   return (
@@ -59,11 +60,20 @@ export default function Header()
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                    <UserCircle className="h-6 w-6" />
+                  <Button variant="outline" className="relative h-8 w-8 rounded-full">
+                    <User className="h-6 w-6" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
+                  <DropdownMenuItem>
+                    <span className="font-medium">{user.name}</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <span className="text-muted-foreground">{user.email}</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <span className="text-muted-foreground capitalize">{user.role.toLowerCase()}</span>
+                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => signOut()}>
                     Log out
                   </DropdownMenuItem>

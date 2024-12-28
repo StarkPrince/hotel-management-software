@@ -12,7 +12,7 @@ import
   TableRow,
 } from "@/apps/web/components/ui/table";
 import mockDb from "@/apps/web/data/mock-db.json";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2 } from 'lucide-react';
 import { useState } from "react";
 
 export function StaffManagementTable()
@@ -24,12 +24,12 @@ export function StaffManagementTable()
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
+            <TableHead className="w-[200px]">Name</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Role</TableHead>
             <TableHead>Department</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -38,21 +38,21 @@ export function StaffManagementTable()
               <TableCell className="font-medium">{member.name}</TableCell>
               <TableCell>{member.email}</TableCell>
               <TableCell>
-                <Badge>{member.role}</Badge>
+                <Badge variant="outline">{member.role}</Badge>
               </TableCell>
               <TableCell>{member.departmentId || "N/A"}</TableCell>
               <TableCell>
-                <Badge variant="outline">Active</Badge>
+                <Badge variant="secondary">Active</Badge>
               </TableCell>
-              <TableCell>
-                <div className="flex space-x-2">
-                  <Button variant="ghost" size="icon">
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon">
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
+              <TableCell className="text-right">
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <span className="sr-only">Edit</span>
+                  <Edit className="h-4 w-4" />
+                </Button>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <span className="sr-only">Delete</span>
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </TableCell>
             </TableRow>
           ))}
@@ -61,3 +61,4 @@ export function StaffManagementTable()
     </div>
   );
 }
+

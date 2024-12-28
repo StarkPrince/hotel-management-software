@@ -5,7 +5,7 @@ import { StaffManagementTable } from "@/apps/web/components/dashboard/staff/staf
 import { StaffPerformance } from "@/apps/web/components/dashboard/staff/staff-performance";
 import { Button } from "@/apps/web/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/apps/web/components/ui/card";
-import { Plus } from "lucide-react";
+import { Plus } from 'lucide-react';
 import { useRouter } from "next/navigation";
 
 export default function StaffPage()
@@ -13,27 +13,28 @@ export default function StaffPage()
   const router = useRouter();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Staff Management</h1>
-        <Button onClick={() => router.push("/dashboard/staff/new")}>
-          <Plus className="mr-2 h-4 w-4" /> Add Staff Member
+        <h1 className="text-xl font-semibold">Staff Management</h1>
+        <Button size="sm" onClick={() => router.push("/dashboard/staff/new")}>
+          <Plus className="mr-1 h-3 w-3" /> Add Staff
         </Button>
       </div>
 
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
-        <DepartmentOverview />
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         <StaffPerformance />
+        <DepartmentOverview />
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>All Staff Members</CardTitle>
+        <CardHeader className="py-2">
+          <CardTitle className="text-sm font-medium">All Staff</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-2">
           <StaffManagementTable />
         </CardContent>
       </Card>
     </div>
   );
 }
+

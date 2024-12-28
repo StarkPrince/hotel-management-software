@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/apps/web/components/ui/card";
 import mockDb from "@/apps/web/data/mock-db.json";
-import { AlertTriangle, BedDouble, Calendar, Users } from "lucide-react";
+import { AlertTriangle, BedDouble, Calendar, Users } from 'lucide-react';
 
 export function QuickStats()
 {
@@ -16,7 +16,7 @@ export function QuickStats()
     },
     {
       title: "Active Guests",
-      value: mockDb.bookings.filter(b => b.status === "ACTIVE").length,
+      value: mockDb.bookings.filter(b => b.status === "CHECKED_IN").length,
       change: "+18.1%",
       icon: Users,
       description: "from last month",
@@ -42,14 +42,14 @@ export function QuickStats()
       {stats.map((stat, i) => (
         <Card key={i}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
+            <CardTitle className="text-xs font-medium">
               {stat.title}
             </CardTitle>
-            <stat.icon className="h-4 w-4 text-muted-foreground" />
+            <stat.icon className="h-3 w-3 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stat.value}</div>
-            <p className="text-xs text-muted-foreground">
+            <div className="text-lg font-bold">{stat.value}</div>
+            <p className="text-[10px] text-muted-foreground">
               <span className={stat.change.startsWith('+') ? 'text-green-500' : 'text-red-500'}>
                 {stat.change}
               </span>
@@ -61,3 +61,4 @@ export function QuickStats()
     </div>
   );
 }
+

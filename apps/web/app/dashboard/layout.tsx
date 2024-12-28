@@ -3,16 +3,7 @@
 import { Button } from "@/apps/web/components/ui/button";
 import { useAuth } from "@/apps/web/hooks/use-auth";
 import { cn } from "@/apps/web/lib/utils";
-import
-{
-  BedDouble,
-  Calendar,
-  ClipboardList,
-  LayoutDashboard,
-  Menu,
-  Settings,
-  Users,
-} from "lucide-react";
+import { BedDouble, Calendar, ClipboardList, LayoutDashboard, Menu, Settings, Users } from 'lucide-react';
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -50,22 +41,22 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-xs">
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed left-0 top-16 z-30 h-[calc(100vh-4rem)] w-64 border-r bg-white dark:bg-gray-800 transition-all duration-300",
-          collapsed && "w-16"
+          "fixed left-0 top-16 z-30 h-[calc(100vh-4rem)] w-48 border-r bg-white dark:bg-gray-800 transition-all duration-300",
+          collapsed && "w-12"
         )}
       >
         <div className="flex h-full flex-col">
           <Button
             variant="ghost"
             size="icon"
-            className="absolute -right-4 top-4 hidden md:flex"
+            className="absolute -right-3 top-2 hidden md:flex"
             onClick={() => setCollapsed(!collapsed)}
           >
-            <Menu className="h-4 w-4" />
+            <Menu className="h-3 w-3" />
           </Button>
 
           <div className="flex-1 space-y-1 p-2">
@@ -74,13 +65,13 @@ export default function DashboardLayout({
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center space-x-2 rounded-lg px-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-700",
+                  "flex items-center space-x-2 rounded-lg px-2 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-700",
                   pathname === item.href && "bg-gray-100 dark:bg-gray-700",
                   collapsed && "justify-center"
                 )}
               >
-                <item.icon className="h-5 w-5" />
-                {!collapsed && <span>{item.label}</span>}
+                <item.icon className="h-3 w-3" />
+                {!collapsed && <span className="text-xs">{item.label}</span>}
               </Link>
             ))}
           </div>
@@ -91,10 +82,10 @@ export default function DashboardLayout({
       <main
         className={cn(
           "min-h-[calc(100vh-4rem)] transition-all duration-300 bg-gray-50 dark:bg-gray-900",
-          collapsed ? "ml-16" : "ml-64"
+          collapsed ? "ml-12" : "ml-48"
         )}
       >
-        <div className="container py-6">{children}</div>
+        <div className="container py-4">{children}</div>
       </main>
     </div>
   );

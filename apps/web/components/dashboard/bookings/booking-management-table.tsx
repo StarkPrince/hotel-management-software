@@ -12,7 +12,7 @@ import
   TableRow,
 } from "@/apps/web/components/ui/table";
 import mockDb from "@/apps/web/data/mock-db.json";
-import { Edit, Eye } from "lucide-react";
+import { Edit, Eye } from 'lucide-react';
 import { useState } from "react";
 
 export function BookingManagementTable()
@@ -21,14 +21,20 @@ export function BookingManagementTable()
 
   const getStatusColor = (status: string) =>
   {
-    const colors = {
-      CONFIRMED: "success",
-      PENDING: "warning",
-      CANCELLED: "destructive",
-      CHECKED_IN: "default",
-      CHECKED_OUT: "secondary",
-    } as const;
-    return colors[status as keyof typeof colors] || "default";
+    switch (status) {
+      case "CONFIRMED":
+        return "outline";
+      case "PENDING":
+        return "secondary";
+      case "CANCELLED":
+        return "destructive";
+      case "CHECKED_IN":
+        return "default";
+      case "CHECKED_OUT":
+        return "secondary";
+      default:
+        return "default";
+    }
   };
 
   return (
@@ -36,39 +42,39 @@ export function BookingManagementTable()
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Guest</TableHead>
+            <TableHead className="w-[180px]">Guest</TableHead>
             <TableHead>Room</TableHead>
             <TableHead>Check In</TableHead>
             <TableHead>Check Out</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Amount</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {bookings.map((booking) =>
           {
-            const guest = mockDb.users.find(u => u.id === booking.userId);
+            const guest = mockDb.users.find(u => u.email === booking.guestEmail);
             const room = mockDb.rooms.find(r => r.id === booking.roomId);
             return (
               <TableRow key={booking.id}>
-                <TableCell>{guest?.name}</TableCell>
+                <TableCell className="font-medium">{guest?.name}</TableCell>
                 <TableCell>Room {room?.number}</TableCell>
                 <TableCell>{new Date(booking.checkIn).toLocaleDateString()}</TableCell>
                 <TableCell>{new Date(booking.checkOut).toLocaleDateString()}</TableCell>
                 <TableCell>
                   <Badge variant={getStatusColor(booking.status)}>{booking.status}</Badge>
                 </TableCell>
-                <TableCell>${booking.totalPrice}</TableCell>
-                <TableCell>
-                  <div className="flex space-x-2">
-                    <Button variant="ghost" size="icon">
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <Button variant="ghost" size="icon">
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                  </div>
+                <TableCell>${booking.totalAmount.toFixed(2)}</TableCell>
+                <TableCell className="text-right">
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                    <span className="sr-only">View details</span>
+                    <Eye className="h-4 w-4" />
+                  </Button>
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                    <span className="sr-only">Edit</span>
+                    <Edit className="h-4 w-4" />
+                  </Button>
                 </TableCell>
               </TableRow>
             );

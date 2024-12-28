@@ -17,23 +17,23 @@ export function RoomTypeDistribution()
     value,
   }));
 
-  const COLORS = ["hsl(var(--chart-1))", "hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))"];
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Room Type Distribution</CardTitle>
+        <CardTitle className="text-sm font-medium">Room Type Distribution</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-[200px]">
+        <div className="h-[180px]">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
                 data={data}
                 cx="50%"
                 cy="50%"
-                innerRadius={40}
-                outerRadius={80}
+                innerRadius={30}
+                outerRadius={60}
                 paddingAngle={2}
                 dataKey="value"
               >
@@ -41,8 +41,8 @@ export function RoomTypeDistribution()
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip />
-              <Legend />
+              <Tooltip contentStyle={{ fontSize: 12 }} />
+              <Legend wrapperStyle={{ fontSize: 12 }} />
             </PieChart>
           </ResponsiveContainer>
         </div>
@@ -50,3 +50,4 @@ export function RoomTypeDistribution()
     </Card>
   );
 }
+

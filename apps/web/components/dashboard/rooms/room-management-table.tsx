@@ -12,22 +12,27 @@ import
   TableRow,
 } from "@/apps/web/components/ui/table";
 import mockDb from "@/apps/web/data/mock-db.json";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2 } from 'lucide-react';
 import { useState } from "react";
 
 export function RoomManagementTable()
 {
   const [rooms] = useState(mockDb.rooms);
 
-  const getRoomStatusColor = (status: string) =>
+  const getRoomStatusColor = (status: string): "default" | "secondary" | "destructive" | "outline" =>
   {
-    const colors = {
-      AVAILABLE: "success",
-      OCCUPIED: "warning",
-      MAINTENANCE: "destructive",
-      CLEANING: "secondary",
-    } as const;
-    return colors[status as keyof typeof colors] || "default";
+    switch (status) {
+      case "AVAILABLE":
+        return "outline";
+      case "OCCUPIED":
+        return "secondary";
+      case "MAINTENANCE":
+        return "destructive";
+      case "CLEANING":
+        return "secondary";
+      default:
+        return "default";
+    }
   };
 
   return (
@@ -35,13 +40,13 @@ export function RoomManagementTable()
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Room Number</TableHead>
+            <TableHead className="w-[100px]">Room Number</TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Floor</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Price</TableHead>
             <TableHead>Last Cleaned</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -53,17 +58,17 @@ export function RoomManagementTable()
               <TableCell>
                 <Badge variant={getRoomStatusColor(room.status)}>{room.status}</Badge>
               </TableCell>
-              <TableCell>${room.price}</TableCell>
+              <TableCell>${room.price.toFixed(2)}</TableCell>
               <TableCell>{new Date(room.lastCleaned).toLocaleDateString()}</TableCell>
-              <TableCell>
-                <div className="flex space-x-2">
-                  <Button variant="ghost" size="icon">
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon">
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
+              <TableCell className="text-right">
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <span className="sr-only">Edit</span>
+                  <Edit className="h-4 w-4" />
+                </Button>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <span className="sr-only">Delete</span>
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </TableCell>
             </TableRow>
           ))}
@@ -72,3 +77,4 @@ export function RoomManagementTable()
     </div>
   );
 }
+
