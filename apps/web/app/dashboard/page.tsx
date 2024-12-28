@@ -1,67 +1,116 @@
 "use client";
 
-import { BookingCard } from "@/apps/web/components/guest/dashboard/booking-card";
-import { DashboardStats } from "@/apps/web/components/guest/dashboard/dashboard-stats";
-import { QrScanner } from "@/apps/web/components/guest/dashboard/qr-scanner";
-import { ServiceRequests } from "@/apps/web/components/guest/dashboard/service-request";
-import { useAuth } from "@/apps/web/components/providers/auth-provider";
-import { Button } from "@/apps/web/components/ui/button";
-import type { Booking } from "@prisma/client";
-import { useEffect, useState } from "react";
-import Header from "../layout/header";
+import { RevenueChart } from "@/apps/web/components/admin/stats/revenue-chart";
+import { OccupancyChart } from "@/apps/web/components/dashboard/charts/occupancy-chart";
+import { QuickStats } from "@/apps/web/components/dashboard/stats/quick-stats";
+import { Card, CardContent, CardHeader, CardTitle } from "@/apps/web/components/ui/card";
+import { ScrollArea } from "@/apps/web/components/ui/scroll-area";
+import mockDb from "@/apps/web/data/mock-db.json";
+import { useAuth } from "@/apps/web/hooks/use-auth";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function DashboardPage()
 {
-    const { user } = useAuth();
-    const [bookings, setBookings] = useState<Booking[]>([]);
-    const [showScanner, setShowScanner] = useState(false);
+  const { user } = useAuth();
+  const router = useRouter();
 
-    useEffect(() =>
-    {
-        fetchBookings();
-    }, []);
+  useEffect(() =>
+  {
+    if (!user || user.role !== "ADMIN") {
+      router.push("/");
+    }
+  }, [user, router]);
 
-    const fetchBookings = async () =>
-    {
-        try {
-            const response = await fetch("/api/bookings");
-            if (response.ok) {
-                const data = await response.json();
-                setBookings(data);
-            }
-        } catch (error) {
-            console.error("Failed to fetch bookings:", error);
-        }
-    };
+  if (!user || user.role !== "ADMIN") {
+    return null;
+  }
 
-    return (
-        <>
-            <Header />
-            <div className="container mx-auto px-4 py-8">
-                <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-3xl font-bold">Welcome, {user?.name}</h1>
-                    <Button onClick={() => setShowScanner(true)}>Scan QR Code</Button>
-                </div>
+  const recentBookings = mockDb.bookings
+    .sort((a, b) => new Date(b.checkIn).getTime() - new Date(a.checkIn).getTime())
+    .slice(0, 5);
 
-                <DashboardStats />
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold">Dashboard Overview</h1>
+        <p className="text-sm text-muted-foreground">
+          Last updated: {new Date().toLocaleString()}
+        </p>
+      </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div>
-                        <h2 className="text-2xl font-semibold mb-4">Current Bookings</h2>
-                        {bookings.map((booking) => (
-                            <BookingCard key={booking.id} booking={booking} />
-                        ))}
+      <QuickStats />
+
+      <div className="grid gap-6 grid-cols-1 lg:grid-cols-6">
+        <div className="lg:col-span-4">
+          <RevenueChart />
+        </div>
+        <div className="lg:col-span-2">
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent Bookings</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ScrollArea className="h-[300px]">
+                {recentBookings.map((booking) =>
+                {
+                  const guest = mockDb.users.find(u => u.id === booking.userId);
+                  const room = mockDb.rooms.find(r => r.id === booking.roomId);
+                  return (
+                    <div key={booking.id} className="mb-4 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0">
+                      <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500" />
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium">
+                          {guest?.name} - Room {room?.number}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          Check-in: {new Date(booking.checkIn).toLocaleDateString()}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                        <h2 className="text-2xl font-semibold mb-4">Service Requests</h2>
-                        <ServiceRequests />
-                    </div>
-                </div>
+                  );
+                })}
+              </ScrollArea>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
 
-                {showScanner && (
-                    <QrScanner onClose={() => setShowScanner(false)} />
-                )}
-            </div>
-        </>
-    );
+      <div className="grid gap-6 grid-cols-1 lg:grid-cols-6">
+        <div className="lg:col-span-4">
+          <OccupancyChart />
+        </div>
+        <div className="lg:col-span-2">
+          <Card>
+            <CardHeader>
+              <CardTitle>Maintenance Alerts</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ScrollArea className="h-[300px]">
+                {mockDb.maintenance
+                  .filter(m => m.status === "PENDING")
+                  .map((issue) =>
+                  {
+                    const room = mockDb.rooms.find(r => r.id === issue.roomId);
+                    return (
+                      <div key={issue.id} className="mb-4 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0">
+                        <span className="flex h-2 w-2 translate-y-1 rounded-full bg-red-500" />
+                        <div className="space-y-1">
+                          <p className="text-sm font-medium">
+                            Room {room?.number} - {issue.issue}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            Reported: {new Date(issue.reportedDate).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </ScrollArea>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
 }

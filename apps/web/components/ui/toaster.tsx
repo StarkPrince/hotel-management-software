@@ -1,6 +1,5 @@
-'use client';
+"use client";
 
-import { useToast } from '@/hooks/use-toast';
 import
   {
     Toast,
@@ -9,7 +8,8 @@ import
     ToastProvider,
     ToastTitle,
     ToastViewport,
-  } from '@/apps/web/components/ui/toast';
+  } from "@/apps/web/components/ui/toast";
+import { useToast } from "@/apps/web/components/ui/use-toast";
 
 export function Toaster()
 {

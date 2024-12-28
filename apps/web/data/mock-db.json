@@ -1,0 +1,121 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "admin@luxstay.com",
+      "password": "admin123",
+      "name": "Admin User",
+      "role": "ADMIN"
+    },
+    {
+      "id": "2",
+      "email": "manager@luxstay.com",
+      "password": "manager123",
+      "name": "Hotel Manager",
+      "role": "MANAGER"
+    },
+    {
+      "id": "3",
+      "email": "staff@luxstay.com",
+      "password": "staff123",
+      "name": "Staff Member",
+      "role": "STAFF"
+    },
+    {
+      "id": "4",
+      "email": "guest@example.com",
+      "password": "guest123",
+      "name": "John Doe",
+      "role": "GUEST"
+    }
+  ],
+  "rooms": [
+    {
+      "id": "1",
+      "number": "101",
+      "type": "STANDARD",
+      "floor": 1,
+      "price": 199.99,
+      "status": "AVAILABLE",
+      "amenities": ["WiFi", "TV", "Mini Bar"],
+      "imageUrl": "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&q=80&w=800",
+      "lastCleaned": "2024-03-20T10:00:00Z",
+      "nextMaintenance": "2024-04-01T00:00:00Z"
+    },
+    {
+      "id": "2",
+      "number": "201",
+      "type": "DELUXE",
+      "floor": 2,
+      "price": 299.99,
+      "status": "OCCUPIED",
+      "amenities": ["WiFi", "TV", "Mini Bar", "Ocean View", "Balcony"],
+      "imageUrl": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=800",
+      "lastCleaned": "2024-03-21T10:00:00Z",
+      "nextMaintenance": "2024-04-05T00:00:00Z"
+    }
+  ],
+  "amenities": [
+    {
+      "id": "1",
+      "name": "Swimming Pool",
+      "description": "Outdoor infinity pool with ocean view",
+      "status": "OPERATIONAL",
+      "openingHours": "7:00 AM - 10:00 PM",
+      "maintenanceSchedule": "Monday",
+      "imageUrl": "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+      "id": "2",
+      "name": "Fitness Center",
+      "description": "Modern gym with cardio and weight equipment",
+      "status": "OPERATIONAL",
+      "openingHours": "24/7",
+      "maintenanceSchedule": "Wednesday",
+      "imageUrl": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+      "id": "3",
+      "name": "Spa",
+      "description": "Luxury spa offering various treatments",
+      "status": "OPERATIONAL",
+      "openingHours": "9:00 AM - 8:00 PM",
+      "maintenanceSchedule": "Sunday",
+      "imageUrl": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&q=80&w=800"
+    }
+  ],
+  "bookings": [
+    {
+      "id": "1",
+      "roomId": "2",
+      "userId": "4",
+      "checkIn": "2024-03-20T14:00:00Z",
+      "checkOut": "2024-03-25T11:00:00Z",
+      "status": "ACTIVE",
+      "totalPrice": 1499.95,
+      "specialRequests": "Late check-out requested"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Clean Room 101",
+      "description": "Regular cleaning service",
+      "assignedTo": "3",
+      "status": "PENDING",
+      "priority": "HIGH",
+      "dueDate": "2024-03-22T15:00:00Z"
+    }
+  ],
+  "maintenance": [
+    {
+      "id": "1",
+      "roomId": "1",
+      "issue": "AC maintenance",
+      "status": "SCHEDULED",
+      "reportedDate": "2024-03-19T09:00:00Z",
+      "scheduledDate": "2024-03-23T10:00:00Z",
+      "assignedTo": "3"
+    }
+  ]
+}

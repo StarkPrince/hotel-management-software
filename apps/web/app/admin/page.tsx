@@ -1,81 +1,56 @@
-"use client"
+"use client";
 
-import { fetchDashboardStats } from "@/apps/web/api"
-import { DashboardChart } from "@/apps/web/components/admin/dashboard/chart"
-import { Card, CardContent, CardHeader, CardTitle } from "@/apps/web/components/ui/card"
-import { BedDouble, CalendarCheck, Percent, TrendingUp } from 'lucide-react'
-import { useEffect, useState } from "react"
+import BookingManagement from "@/apps/web/components/admin/booking-management";
+import MaintenanceManagement from "@/apps/web/components/admin/maintenance-management";
+import AdminOverview from "@/apps/web/components/admin/overview";
+import RoomManagement from "@/apps/web/components/admin/room-management";
+import StaffManagement from "@/apps/web/components/admin/staff-management";
+import TaskManagement from "@/apps/web/components/admin/task-management";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/apps/web/components/ui/tabs";
+import { useState } from "react";
 
-export default function DashboardPage()
+export default function AdminDashboard()
 {
-  const [stats, setStats] = useState({
-    totalRooms: 0,
-    occupiedRooms: 0,
-    occupancyRate: 0,
-    activeBookings: 0,
-    revenue: 0,
-  })
-
-  useEffect(() =>
-  {
-    const loadStats = async () =>
-    {
-      const data = await fetchDashboardStats()
-      setStats(data)
-    }
-    loadStats()
-  }, [])
-
-  const statCards = [
-    {
-      title: "Total Rooms",
-      value: stats.totalRooms,
-      icon: BedDouble,
-      description: `${stats.totalRooms - stats.occupiedRooms} currently available`,
-    },
-    {
-      title: "Occupancy Rate",
-      value: `${stats.occupancyRate}%`,
-      icon: Percent,
-      description: `${stats.occupiedRooms} rooms occupied`,
-    },
-    {
-      title: "Active Bookings",
-      value: stats.activeBookings,
-      icon: CalendarCheck,
-      description: "Current active bookings",
-    },
-    {
-      title: "Revenue",
-      value: `₹${stats.revenue.toLocaleString()}`,
-      icon: TrendingUp,
-      description: "Total revenue",
-    },
-  ]
+  const [activeTab, setActiveTab] = useState("overview");
 
   return (
-    <div className="space-y-8">
-      <h1 className="text-3xl font-bold">Dashboard</h1>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {statCards.map((stat, index) => (
-          <Card key={index}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                {stat.title}
-              </CardTitle>
-              <stat.icon className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground">
-                {stat.description}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-      <DashboardChart />
-    </div>
-  )
-}
+    <div className="container py-10">
+      <h1 className="text-4xl font-bold mb-8">Admin Dashboard</h1>
 
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+        <TabsList className="grid grid-cols-3 lg:grid-cols-6 h-auto gap-4">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="rooms">Rooms</TabsTrigger>
+          <TabsTrigger value="staff">Staff</TabsTrigger>
+          <TabsTrigger value="tasks">Tasks</TabsTrigger>
+          <TabsTrigger value="maintenance">Maintenance</TabsTrigger>
+          <TabsTrigger value="bookings">Bookings</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview" className="mt-6">
+          <AdminOverview />
+        </TabsContent>
+
+        <TabsContent value="rooms" className="mt-6">
+          <RoomManagement />
+        </TabsContent>
+
+        <TabsContent value="staff" className="mt-6">
+          <StaffManagement />
+        </TabsContent>
+
+        <TabsContent value="tasks" className="mt-6">
+          <TaskManagement />
+        </TabsContent>
+
+        <TabsContent value="maintenance" className="mt-6">
+          <MaintenanceManagement />
+        </TabsContent>
+
+        <TabsContent value="bookings" className="mt-6">
+          <BookingManagement />
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}

@@ -1,105 +1,102 @@
 "use client";
 
-import { User } from '@prisma/client';
-import axios from 'axios';
-import { createContext, useContext, useEffect, useState } from 'react';
-import { BASE_URL } from '../../config';
+import { toast } from "@/apps/web/components/ui/use-toast";
+import { getCurrentUser, loginApi, logoutApi } from "@/apps/web/lib/auth/api";
+import { User } from "@/apps/web/lib/auth/types";
+import { useRouter } from "next/navigation";
+import { createContext, useContext, useEffect, useState } from "react";
 
 interface AuthContextType
 {
-    user: User | null;
-    login: (email: string, password: string) => Promise<void>;
-    logout: () => Promise<void>;
-    loading: boolean;
-    register: (email: string, password: string) => Promise<void>;
+  user: User | null;
+  signIn: (email: string, password: string) => Promise<void>;
+  signOut: () => Promise<void>;
+  isLoading: boolean;
 }
 
-const AuthContext = createContext<AuthContextType>({
-    user: null,
-    login: async () => { },
-    logout: async () => { },
-    loading: true,
-    register: async () => { },
-});
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode })
 {
-    const [user, setUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
-    useEffect(() =>
+  useEffect(() =>
+  {
+    const initAuth = async () =>
     {
-        checkAuth();
-    }, []);
-
-    const checkAuth = async () =>
-    {
-        try {
-            const response = await axios.get(`${BASE_URL}/auth/login`, {
-                withCredentials: true, // Ensures cookies are sent with the request
-            });
-            if (response.data) {
-                setUser(response.data.user);
-            }
-        } catch (error) {
-            console.error('Auth check failed:', error);
-            setUser(null);
-        } finally {
-            setLoading(false);
-        }
+      try {
+        const user = await getCurrentUser();
+        setUser(user);
+      } catch (error) {
+        console.error("Auth initialization failed:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    const login = async (email: string, password: string) =>
-    {
-        try {
-            const response = await axios.post(
-                `${BASE_URL}/auth/login`,
-                { email, password },
-                { withCredentials: true } // Ensures cookies are handled
-            );
-            if (!response.data) {
-                throw new Error('Login failed');
-            }
-            setUser(response.data.user);
-        } catch (error) {
-            console.error('Login failed:', error);
-            throw error;
-        }
-    };
+    initAuth();
+  }, []);
 
-    const logout = async () =>
-    {
-        try {
-            await axios.post(`${BASE_URL}/auth/logout`, {}, { withCredentials: true });
-            setUser(null);
-        } catch (error) {
-            console.error('Logout failed:', error);
-        }
-    };
+  const signIn = async (email: string, password: string) =>
+  {
+    setIsLoading(true);
+    try {
+      const result = await loginApi(email, password);
+      if (result.error) {
+        throw new Error(result.error);
+      }
+      setUser(result.user);
+      toast({
+        title: "Welcome back!",
+        description: "You have successfully logged in.",
+      });
+      router.push("/");
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message || "Login failed",
+      });
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    const register = async (email: string, password: string) =>
-    {
-        try {
-            const response = await axios.post(
-                `${BASE_URL}/auth/register`,
-                { email, password },
-                { withCredentials: true }
-            );
-            if (!response.data) {
-                throw new Error('Registration failed');
-            }
-            setUser(response.data.user);
-        } catch (error) {
-            console.error('Registration failed:', error);
-            throw error;
-        }
-    };
+  const signOut = async () =>
+  {
+    try {
+      await logoutApi();
+      setUser(null);
+      router.push("/");
+      toast({
+        title: "Logged out",
+        description: "You have been successfully logged out.",
+      });
+    } catch (error) {
+      console.error("Logout failed:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Logout failed",
+      });
+    }
+  };
 
-    return (
-        <AuthContext.Provider value={{ user, login, logout, register, loading }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider value={{ user, signIn, signOut, isLoading }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () =>
+{
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};
