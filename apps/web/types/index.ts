@@ -220,9 +220,11 @@ export interface Staff {
 export interface Shift {
   id: string;
   staffId: string;
+  date: string;
   startTime: string;
   endTime: string;
-  status: string;
+  department: string;
+  status: "SCHEDULED" | "PENDING" | "COMPLETED" | "CANCELLED";
 }
 
 export interface Booking {

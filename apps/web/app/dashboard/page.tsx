@@ -8,23 +8,12 @@ import { ScrollArea } from "@/apps/web/components/ui/scroll-area";
 import mockDb from "@/apps/web/data/mock-db.json";
 import { useAuth } from "@/apps/web/hooks/use-auth";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export default function DashboardPage()
 {
   const { user } = useAuth();
   const router = useRouter();
 
-  useEffect(() =>
-  {
-    if (!user || user.role !== "ADMIN") {
-      router.push("/");
-    }
-  }, [user, router]);
-
-  if (!user || user.role !== "ADMIN") {
-    return null;
-  }
 
   const recentBookings = mockDb.bookings
     .sort((a, b) => new Date(b.checkIn).getTime() - new Date(a.checkIn).getTime())

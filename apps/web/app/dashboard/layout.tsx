@@ -3,7 +3,7 @@
 import { Button } from "@/apps/web/components/ui/button";
 import { useAuth } from "@/apps/web/hooks/use-auth";
 import { cn } from "@/apps/web/lib/utils";
-import { BedDouble, Calendar, ClipboardList, LayoutDashboard, Menu, QrCode, Settings, Users } from 'lucide-react';
+import { BedDouble, Calendar, ClipboardList, LayoutDashboard, Menu, QrCode, Settings, Ticket, Users } from 'lucide-react';
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -12,6 +12,7 @@ const sidebarItems = [
   { icon: LayoutDashboard, label: "Overview", href: "/dashboard" },
   { icon: BedDouble, label: "Rooms", href: "/dashboard/rooms" },
   { icon: Users, label: "Staff", href: "/dashboard/staff" },
+  { icon: Ticket, label: "Ticket", href: "/dashboard/tickets" },
   { icon: Calendar, label: "Bookings", href: "/dashboard/bookings" },
   { icon: ClipboardList, label: "Tasks", href: "/dashboard/tasks" },
   { icon: Settings, label: "Maintenance", href: "/dashboard/maintenance" },
@@ -33,12 +34,13 @@ export default function DashboardLayout({
 
   useEffect(() =>
   {
-    if (!user || user.role !== "ADMIN") {
+    if (!user || user.role !== "ADMIN" && user.role !== "MANAGER") {
       router.push("/");
     }
   }, [user, router]);
 
-  if (!user || user.role !== "ADMIN") {
+  if (!user || !(user.role === "ADMIN" || user.role === "MANAGER")) {
+    console.log("user", user);
     return null;
   }
 
@@ -55,7 +57,7 @@ export default function DashboardLayout({
           <Button
             variant="ghost"
             size="icon"
-            className="absolute -right-3 top-2 hidden md:flex"
+            className="flex items-center space-x-2 rounded-lg px-2 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-700"
             onClick={() => setCollapsed(!collapsed)}
           >
             <Menu className="h-3 w-3" />
@@ -67,7 +69,7 @@ export default function DashboardLayout({
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center space-x-2 rounded-lg px-2 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-700",
+                  "flex items-center space-x-2 rounded-lg pl-2 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-700",
                   pathname === item.href && "bg-gray-100 dark:bg-gray-700",
                   collapsed && "justify-center"
                 )}
@@ -83,7 +85,7 @@ export default function DashboardLayout({
       {/* Main Content */}
       <main
         className={cn(
-          "min-h-[calc(100vh-4rem)] transition-all duration-300 bg-gray-50 dark:bg-gray-900",
+          "min-h-[calc(100vh-4rem)] transition-all duration-300 pl-6 bg-gray-50 dark:bg-gray-900",
           collapsed ? "ml-12" : "ml-48"
         )}
       >

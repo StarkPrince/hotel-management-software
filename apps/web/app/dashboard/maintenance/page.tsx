@@ -1,8 +1,8 @@
 "use client";
 
-import { MaintenanceTimeline } from "@/apps/web/components/dashboard/maintenance/maintenace-localtime";
 import { MaintenanceManagementTable } from "@/apps/web/components/dashboard/maintenance/maintenance-management-table";
 import { MaintenanceStats } from "@/apps/web/components/dashboard/maintenance/maintenance-stats";
+import { MaintenanceTimeline } from "@/apps/web/components/dashboard/maintenance/maintenance-timeline";
 import { Button } from "@/apps/web/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/apps/web/components/ui/card";
 import { Plus } from "lucide-react";

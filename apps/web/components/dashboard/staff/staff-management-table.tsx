@@ -12,24 +12,26 @@ import
   TableRow,
 } from "@/apps/web/components/ui/table";
 import mockDb from "@/apps/web/data/mock-db.json";
-import { Edit, Trash2 } from 'lucide-react';
+import { Calendar, ClipboardList, Edit, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function StaffManagementTable()
 {
   const [staff] = useState(mockDb.users.filter(user => user.role !== "GUEST"));
+  const router = useRouter();
 
   return (
     <div className="rounded-md border">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[200px]">Name</TableHead>
+            <TableHead>Name</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Role</TableHead>
             <TableHead>Department</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -38,21 +40,35 @@ export function StaffManagementTable()
               <TableCell className="font-medium">{member.name}</TableCell>
               <TableCell>{member.email}</TableCell>
               <TableCell>
-                <Badge variant="outline">{member.role}</Badge>
+                <Badge>{member.role}</Badge>
               </TableCell>
               <TableCell>{member.departmentId || "N/A"}</TableCell>
               <TableCell>
-                <Badge variant="secondary">Active</Badge>
+                <Badge variant="outline">Active</Badge>
               </TableCell>
-              <TableCell className="text-right">
-                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                  <span className="sr-only">Edit</span>
-                  <Edit className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                  <span className="sr-only">Delete</span>
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+              <TableCell>
+                <div className="flex space-x-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => router.push(`/dashboard/staff/${member.id}`)}
+                  >
+                    <Calendar className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => router.push(`/dashboard/staff/${member.id}?tab=assignments`)}
+                  >
+                    <ClipboardList className="h-4 w-4" />
+                  </Button>
+                  <Button variant="ghost" size="icon">
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                  <Button variant="ghost" size="icon">
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
               </TableCell>
             </TableRow>
           ))}
@@ -61,4 +77,3 @@ export function StaffManagementTable()
     </div>
   );
 }
-

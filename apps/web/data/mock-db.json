@@ -204,5 +204,47 @@
       "imageUrl": "https://images.unsplash.com/photo-1600334129128-685c5582fd35",
       "category": "Spa"
     }
+  ],
+  "tickets": [
+    {
+      "id": "1",
+      "title": "AC not working properly",
+      "description": "The air conditioning in my room is making strange noises and not cooling effectively.",
+      "category": "MAINTENANCE",
+      "priority": "HIGH",
+      "status": "OPEN",
+      "createdBy": "4",
+      "assignedTo": "3",
+      "roomId": "2",
+      "createdAt": "2024-03-20T15:30:00Z",
+      "updatedAt": "2024-03-20T15:30:00Z"
+    },
+    {
+      "id": "2",
+      "title": "Additional towels needed",
+      "description": "Please provide extra towels for our room.",
+      "category": "HOUSEKEEPING",
+      "priority": "LOW",
+      "status": "COMPLETED",
+      "createdBy": "4",
+      "assignedTo": "3",
+      "roomId": "2",
+      "createdAt": "2024-03-20T10:15:00Z",
+      "updatedAt": "2024-03-20T11:00:00Z",
+      "completedAt": "2024-03-20T11:00:00Z"
+    },
+    {
+      "id": "3",
+      "title": "Room service request",
+      "description": "Would like to order breakfast for tomorrow morning.",
+      "category": "ROOM_SERVICE",
+      "priority": "MEDIUM",
+      "status": "IN_PROGRESS",
+      "createdBy": "5",
+      "assignedTo": "3",
+      "roomId": "1",
+      "createdAt": "2024-03-20T18:45:00Z",
+      "updatedAt": "2024-03-20T19:00:00Z"
+    }
   ]
 }
