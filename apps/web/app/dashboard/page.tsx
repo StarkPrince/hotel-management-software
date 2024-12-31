@@ -54,7 +54,7 @@ export default function DashboardPage()
               <ScrollArea className="h-[250px]">
                 {recentBookings.map((booking) =>
                 {
-                  const guest = mockDb.users.find(u => u.id === booking.userId);
+                  const guest = mockDb.users.find(u => u.email === booking.guestEmail);
                   const room = mockDb.rooms.find(r => r.id === booking.roomId);
                   return (
                     <div key={booking.id} className="mb-2 grid grid-cols-[16px_1fr] items-start pb-2 last:mb-0 last:pb-0">
@@ -100,7 +100,7 @@ export default function DashboardPage()
                             Room {room?.number} - {issue.issue}
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            Reported: {new Date(issue.reportedDate).toLocaleDateString()}
+                            Reported: {new Date(issue.createdAt).toLocaleDateString()}
                           </p>
                         </div>
                       </div>

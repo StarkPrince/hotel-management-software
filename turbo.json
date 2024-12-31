@@ -36,6 +36,9 @@
       "env": [],
       "cache": false
     },
+    "test": {
+      "cache": false
+    },
     "db:generate": {
       "cache": false
     },

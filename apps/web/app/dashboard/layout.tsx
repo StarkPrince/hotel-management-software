@@ -3,7 +3,7 @@
 import { Button } from "@/apps/web/components/ui/button";
 import { useAuth } from "@/apps/web/hooks/use-auth";
 import { cn } from "@/apps/web/lib/utils";
-import { BedDouble, Calendar, ClipboardList, LayoutDashboard, Menu, Settings, Users } from 'lucide-react';
+import { BedDouble, Calendar, ClipboardList, LayoutDashboard, Menu, QrCode, Settings, Users } from 'lucide-react';
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -15,7 +15,9 @@ const sidebarItems = [
   { icon: Calendar, label: "Bookings", href: "/dashboard/bookings" },
   { icon: ClipboardList, label: "Tasks", href: "/dashboard/tasks" },
   { icon: Settings, label: "Maintenance", href: "/dashboard/maintenance" },
+  { icon: QrCode, label: "QR Generator", href: "/dashboard/qr" },
   { icon: Settings, label: "Settings", href: "/dashboard/settings" },
+
 ];
 
 export default function DashboardLayout({
