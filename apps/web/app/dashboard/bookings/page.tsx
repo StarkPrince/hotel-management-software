@@ -13,23 +13,23 @@ export default function BookingsPage()
   const router = useRouter();
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-xl font-semibold">Booking Management</h1>
-        <Button size="sm" onClick={() => router.push("/dashboard/bookings/new")}>
-          <Plus className="mr-1 h-3 w-3" /> New Booking
+        <h1 className="text-3xl font-bold">Booking Management</h1>
+        <Button onClick={() => router.push("/dashboard/bookings/new")}>
+          <Plus className="mr-2 h-4 w-4" /> New Booking
         </Button>
       </div>
 
       <BookingStats />
 
-      <div className="grid gap-4 grid-cols-1 lg:grid-cols-3">
+      <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <Card>
-            <CardHeader className="py-2">
-              <CardTitle className="text-sm">All Bookings</CardTitle>
+            <CardHeader>
+              <CardTitle>All Bookings</CardTitle>
             </CardHeader>
-            <CardContent className="p-2">
+            <CardContent>
               <BookingManagementTable />
             </CardContent>
           </Card>
